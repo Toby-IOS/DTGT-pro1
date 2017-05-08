@@ -145,7 +145,7 @@
     frame.origin.x=350;
     hedlineLab.frame=frame;
     [UIView beginAnimations:@"testAnimation" context:NULL];
-    [UIView setAnimationDuration:1.8f];
+    [UIView setAnimationDuration:3.8f];
     [UIView setAnimationCurve:UIViewAnimationCurveLinear];
     [UIView setAnimationDelegate:self];
     [UIView setAnimationRepeatAutoreverses:NO];
