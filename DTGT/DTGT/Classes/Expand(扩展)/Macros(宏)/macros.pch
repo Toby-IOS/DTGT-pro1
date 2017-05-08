@@ -1,0 +1,37 @@
+//
+//  macros.pch
+//  Toby
+//
+//  Created by small T on 17/3/27.
+//  Copyright © 2017年 guojianlong. All rights reserved.
+//
+
+#ifndef macros_pch
+#define macros_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* macros_pch */
+
+#define kUsername @"username"
+#define kPassword @"password"
+#define kIsStorePassword @"isStorePassword"
+#define kIsAutomaticLogin @"isAutomaticLogin"
+
+#define WITCH   [UIScreen mainScreen].bounds.size.width
+#define HEIGHT  [UIScreen mainScreen].bounds.size.height
+
+#define kWinSize [UIScreen mainScreen].applicationFrame.size  //应用的宽度,除去状态栏
+#define kBoundsSize [UIScreen mainScreen].bounds.size   //应用屏幕尺寸,包含状态栏
+
+#define kBackgroundColor [UIColor colorWithRed:232.0/255.0 green:232.0/255.0 blue:232.0/255.0 alpha:1.0]
+#define kTitleBarH 64
+#define kMenuBarH 60
+
+// 颜色
+#define ZPJColor(r, g, b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0f]
+#define ZPJColorRGBA(r, g, b, a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:a]
+
+// 随机色
+#define ZPJRandomColor ZPJColor(arc4random_uniform(256), arc4random_uniform(256), arc4random_uniform(256))
