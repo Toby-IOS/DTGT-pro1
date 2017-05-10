@@ -18,19 +18,27 @@
 }
 -(void)createTableViewCell{
 
-    _titleLab=[[UILabel alloc] initWithFrame:CGRectMake(5, 5, WITCH-10, 20)];
-    _titleLab.font=[UIFont systemFontOfSize:14];
+    _titleLab=[[UILabel alloc] initWithFrame:CGRectMake(90, 10, WITCH-95, 20)];
+    _titleLab.font=[UIFont boldSystemFontOfSize:14];
     [self.contentView addSubview:_titleLab];
     
-    _imgView=[[UIImageView alloc]initWithFrame:CGRectMake(5, 30, 80, 50)];
+    _imgView=[[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 70, 70)];
     [self.contentView addSubview:_imgView];
     
-    _contentLab=[[UILabel alloc] initWithFrame:CGRectMake(5+80,30, WITCH-10-80, 50)];
+    _contentLab=[[MyLabel alloc] initWithFrame:CGRectMake(90,30, WITCH-95, 30)];
     _contentLab.font=[UIFont systemFontOfSize:12];
-    _contentLab.numberOfLines=3;
-    _contentLab.textColor=[UIColor grayColor];
+    _contentLab.numberOfLines=2;
+    _contentLab.textColor=ZPJColor(70, 70, 70);
+     [_contentLab setContentMode:UIViewContentModeTop];
+    [_contentLab setVerticalAlignment:VerticalAlignmentTop];
     [self.contentView addSubview:_contentLab];
-
+   
+    _timeLab=[[MyLabel alloc]initWithFrame:CGRectMake(90, 60, WITCH-95, 20)];
+    _timeLab.textColor=[UIColor grayColor];
+    _timeLab.text=@"2017_98_09 13:23:34";
+    [_timeLab setVerticalAlignment:VerticalAlignmentBottom];
+    _timeLab.font=[UIFont systemFontOfSize:10];
+    [self.contentView addSubview:_timeLab];
 }
 
 

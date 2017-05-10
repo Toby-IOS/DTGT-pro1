@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "MyLabel.h"
 @interface DTGTInformationTableViewCell : UITableViewCell
 @property(nonatomic,strong)UILabel *titleLab;
-@property(nonatomic,strong)UILabel *contentLab;
+@property(nonatomic,strong)MyLabel *contentLab;
 @property(nonatomic,strong)UIImageView *imgView;
+@property(nonatomic,strong) MyLabel*timeLab;
 @end
