@@ -7,14 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "Product.h"
 @interface DTGContentViewController : UIViewController
 {
     NSString* contentStr;
     NSString*titleStr;
     NSString*imgName;
     UITextView *textView;
+    NSURL *imgUrl;
+    NSString *timeStr;
 
 }
--(instancetype)initWithTitle:(NSString*)titleString withImgName:(NSString*)imgStr;
+-(instancetype)initWithTitle:(Product*) product;
 @end

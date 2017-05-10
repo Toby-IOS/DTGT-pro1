@@ -25,6 +25,7 @@
 @property(nonatomic, copy) NSString *productPrice;
 @property(nonatomic, copy) NSString *productPlace;
 @property(nonatomic, copy) NSString *productCreateTime;
+@property(nonatomic, copy) NSString *productContent;
 @property(nonatomic, strong) NSArray *productImgUrls;
 
 

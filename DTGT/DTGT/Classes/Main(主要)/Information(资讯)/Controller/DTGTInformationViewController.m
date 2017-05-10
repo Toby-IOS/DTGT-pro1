@@ -13,6 +13,9 @@
 #import "MJRefresh.h"
 #import "LXSegmentScrollView.h"
 #import "LiuXSegmentView.h"
+#import "AFNetworkTool.h"
+#import "Product.h"
+#import "UIImageView+WebCache.h"
 
 @interface DTGTInformationViewController ()<UITableViewDelegate,UITableViewDataSource,LXSegmentScrollViewDelegate>
 {
@@ -20,6 +23,7 @@
     NSArray *titleArray;
     NSArray *contentArray;
     NSArray *imgArray;
+    NSMutableArray *dataSource;
 
 }
 @property(nonatomic,strong)UITableView *tableView1;
@@ -40,6 +44,16 @@
     imgArray=[[NSArray alloc]initWithObjects:@"mainimg1.png",@"mainimg2.png",@"mainimg3.png",@"mainimg4.png",@"mainimg5.png",@"mainimg6.png",@"mainimg7.png",@"mainimg8.png",@"mainimg9.png",@"mainimg10.png",nil];
     contentArray=[[NSArray alloc] initWithObjects:@"1元起拍 219次围观1元起拍 219次围观 1元起拍 219次围观 1元起拍 219次围观 1元起拍 219次围观1元起拍 219次围观1元起拍 219次围观1元起拍 219次围观",@"2元起拍 2139次围观",@"3元起拍 219次围观",@"4元起拍 2139次围观",@"11元起拍 2139次围观",@"2元起拍 21239次围观",@"23元起拍 2193次围观",@"4元起拍 21359次围观",@"121元起拍 3次围观",@"4元起拍 359次围观", nil];
     titleArray=[[NSArray alloc] initWithObjects:@"古玩收藏",@"玉翠珠宝",@"字画篆刻",@"文玩杂货",@"古玩收藏",@"玉翠珠宝",@"字画篆刻",@"文玩杂货",@"字画篆刻",@"文玩杂货", nil];
+    
+    NSString *url=@"https://api.kanke365.com/api/gw----ds/get_recent_posts/?page=1&dev=1";
+    [AFNetworkTool JSONDataWithUrl:url success:^(id json) {
+        NSDictionary *result=json;
+//        NSLog(@"result===%@",result);
+        [self fillWithJsonString:result];
+    } fail:^{
+        NSLog(@"请求失败");
+    }];
+    
 }
 -(void)initVIew{
 
@@ -83,6 +97,22 @@
     scView.dagelate=self;
     [self.view addSubview:scView];
     
+}
+
+-(void)fillWithJsonString:(NSDictionary *)dicData{
+    dataSource=[NSMutableArray array];
+    NSArray *array=[dicData objectForKey:@"posts"];
+    NSLog(@"array==%@",array);
+    for(NSDictionary *dict in  array){
+      Product *product = [[Product alloc]init];
+        product.productTitle=[dict objectForKey:@"title"];
+        product.productImgUrl=[dict objectForKey:@"thumbnail"];
+        product.productCreateTime=[dict objectForKey:@"date"];
+        product.productContent=[dict objectForKey:@"excerpt"];
+        [dataSource addObject:product];
+    }
+    [ _tableView1 reloadData];
+   
 }
 - (void)viewWillAppear:(BOOL)animated{
  [super viewWillAppear: animated];
@@ -146,7 +176,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return [titleArray count];
+    return [dataSource count];
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
@@ -155,24 +185,24 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *myCell=@"cell_identifier";
     DTGTInformationTableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:myCell];
+    cell.selectionStyle=UITableViewCellAccessoryNone;
     if(cell==nil){
     cell=[[DTGTInformationTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:myCell ];
-//    cell.backgroundColor = [UIColor colorWithRed:245.0/255.0f green:245.0/255.0f blue:245.0/255.0f alpha:1.00f];
-//        cell.backgroundColor=[UIColor greenColor];
-    cell.textLabel.textColor = [UIColor colorWithRed:136.0/255.0f green:136.0/255.0f blue:136.0/255.0f alpha:1.00f];
+    
+        Product *product=[dataSource objectAtIndex:indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-    cell.titleLab.text = titleArray[indexPath.row];
-        NSLog(@"titleArray[indexPath.row]==%@",titleArray[indexPath.row]);
-    cell.contentLab.text = contentArray[indexPath.row];
-    cell.imgView.image=[UIImage imageNamed:[imgArray objectAtIndex:indexPath.row]];
-
+    cell.titleLab.text = product.productTitle;
+    cell.contentLab.text = product.productContent;
+    NSURL *imgUrl=[NSURL URLWithString:product.productImgUrl];
+    [cell.imgView sd_setImageWithURL:imgUrl];
+    cell.timeLab.text=product.productCreateTime;
     
     }
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    DTGContentViewController *dtVC=[[DTGContentViewController alloc]initWithTitle:[titleArray objectAtIndex:indexPath.row] withImgName:[imgArray objectAtIndex:indexPath.row]];
+    DTGContentViewController *dtVC=[[DTGContentViewController alloc]initWithTitle:[dataSource objectAtIndex:indexPath.row]];
     dtVC.hidesBottomBarWhenPushed=YES;
     [ self.navigationController pushViewController:dtVC animated:YES];
     
