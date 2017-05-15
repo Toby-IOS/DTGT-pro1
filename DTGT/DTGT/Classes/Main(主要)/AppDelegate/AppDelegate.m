@@ -35,7 +35,7 @@
     NSLog(@"%@",NSStringFromCGRect([UIScreen mainScreen].bounds));
     NSLog(@"%@",self.window);
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    NSLog(@"555===%@",[userDefault objectForKey:kIsStorePassword]);
+//    NSLog(@"555===%@",[userDefault objectForKey:kIsStorePassword]);
     if (![userDefault objectForKey:kIsStorePassword]){
         [userDefault setObject:@"0" forKey:kIsStorePassword];
         NSLog(@"666===%@",[userDefault objectForKey:kIsStorePassword]);
