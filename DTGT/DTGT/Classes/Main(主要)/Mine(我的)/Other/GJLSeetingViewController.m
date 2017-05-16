@@ -49,9 +49,9 @@
     [self.view addSubview:logOutBnt];
 
     
-    array=[NSArray arrayWithObjects:@"客服咨询",@"清空缓存",@"关于我们", nil];
+    array=[NSArray arrayWithObjects:@"分享",@"关于我们", nil];
     
-    mainTableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 64+50, kBoundsSize.width, kBoundsSize.height-64-49-400)];
+    mainTableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 64+50, kBoundsSize.width, kBoundsSize.height-64-49-440)];
     mainTableView.dataSource=self;
     mainTableView.delegate=self;
 
@@ -89,15 +89,15 @@
     cell.textLabel.font=[UIFont fontWithName:@"Helvetica" size:14.0];
     cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle=UITableViewCellAccessoryNone;
-    if(indexPath.row==1){
-     if(!cacheLab)
-        cacheLab=[[UILabel alloc]initWithFrame:CGRectMake(WITCH-150, 5, 120, 30)];
-        cacheLab.text=[NSString stringWithFormat:@"%.2fKB", [self readCacheSize] *1024];;
-        cacheLab.textAlignment=NSTextAlignmentRight;
-        cacheLab.font=[UIFont fontWithName:@"Helvetica" size:12.0];
-        cacheLab.textColor=[UIColor grayColor];
-        [cell addSubview:cacheLab];
-    }
+//    if(indexPath.row==1){
+//     if(!cacheLab)
+//        cacheLab=[[UILabel alloc]initWithFrame:CGRectMake(WITCH-150, 5, 120, 30)];
+//        cacheLab.text=[NSString stringWithFormat:@"%.2fKB", [self readCacheSize] *1024];;
+//        cacheLab.textAlignment=NSTextAlignmentRight;
+//        cacheLab.font=[UIFont fontWithName:@"Helvetica" size:12.0];
+//        cacheLab.textColor=[UIColor grayColor];
+//        [cell addSubview:cacheLab];
+//    }
     return  cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DTGTlistViewController : UIViewController
+@interface DTGTlistViewController : UIViewController{
+
+ NSArray * array;
+}
 
 @end

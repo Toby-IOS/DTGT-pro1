@@ -32,7 +32,7 @@
   categoryTitleArray=[[NSArray alloc] initWithObjects:@"古玩",@"玉翠",@"字画书法",@"珠宝",@"石头",@"珠宝",@"茶器",@"文玩",@"首饰",@"更多", nil];
     
     productTitleArray=[[NSArray alloc] initWithObjects:@"古玩收藏",@"玉翠珠宝",@"字画篆刻",@"文玩杂货",@"古玩收藏",@"玉翠珠宝",@"字画篆刻",@"文玩杂货",@"字画篆刻",@"文玩杂货", nil];
-    productImgArray=[[NSArray alloc]initWithObjects:@"mainimg1.png",@"mainimg2.png",@"mainimg3.png",@"mainimg4.png",@"mainimg5.png",@"mainimg6.png",@"mainimg7.png",@"mainimg8.png",@"mainimg9.png",@"mainimg10.png",nil];
+    productImgArray=[[NSArray alloc]initWithObjects:@"mainimg7.png",@"mainimg2.png",@"mainimg3.png",@"mainimg4.png",@"mainimg5.png",@"mainimg6.png",@"mainimg7.png",@"mainimg8.png",@"mainimg9.png",@"mainimg10.png",nil];
     
     productPriceArray=[[NSArray alloc]initWithObjects:@"2930元",@"900元",@"2900元",@"80元",@"2911元",@"240元",@"200元",@"200元",@"2910元",@"3400元",nil];
 
@@ -145,7 +145,7 @@
     frame.origin.x=350;
     hedlineLab.frame=frame;
     [UIView beginAnimations:@"testAnimation" context:NULL];
-    [UIView setAnimationDuration:8.8f];
+    [UIView setAnimationDuration:20.0f];
     [UIView setAnimationCurve:UIViewAnimationCurveLinear];
     [UIView setAnimationDelegate:self];
     [UIView setAnimationRepeatAutoreverses:NO];
@@ -175,8 +175,8 @@
     static NSString *myCell=@"cell_identifier";
     DTGTHomeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:myCell];
     
-    if(cell==nil){
-        
+//    if(cell==nil){
+    
         cell=[[DTGTHomeTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:myCell ];
         
         cell.backgroundColor = [UIColor colorWithRed:245.0/255.0f green:245.0/255.0f blue:245.0/255.0f alpha:1.00f];
@@ -188,7 +188,7 @@
         cell.priceLabel.text = productPriceArray[indexPath.row];
         cell.imgView.image=[UIImage imageNamed:[productImgArray objectAtIndex:indexPath.row]];
         
-    }
+//    }
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
     return cell;
     

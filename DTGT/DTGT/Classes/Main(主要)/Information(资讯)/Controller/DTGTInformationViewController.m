@@ -83,14 +83,23 @@
     _tableView2.delegate=self;
     _tableView2.dataSource=self;
     _tableView2.rowHeight=90;
-    [array addObject:_tableView2];
+//    [array addObject:_tableView2];
+    UIImageView *kongIcon1=[[UIImageView alloc]init];
+    kongIcon1.image=[UIImage imageNamed:@"kongIcon.png"];
+    [array addObject:kongIcon1];
+    
     
     _tableView3=[[UITableView alloc] init];
     
     _tableView3.delegate=self;
     _tableView3.dataSource=self;
     _tableView3.rowHeight=90;
-    [array addObject:_tableView3];
+//    [array addObject:_tableView3];
+    
+    
+    UIImageView *kongIcon2=[[UIImageView alloc]init];
+    kongIcon2.image=[UIImage imageNamed:@"kongIcon.png"];
+    [array addObject:kongIcon2];
     
     LXSegmentScrollView *scView=[[LXSegmentScrollView alloc] initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, self.view.bounds.size.height-64-49) titleArray:@[@"行业资讯",@"公司动态",@"交易信息"] contentViewArray:array];
     

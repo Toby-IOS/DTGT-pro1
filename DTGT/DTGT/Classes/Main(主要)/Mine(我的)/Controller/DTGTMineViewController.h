@@ -8,13 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DTGTMineViewController : UIViewController{
+@interface DTGTMineViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>{
     
     UIButton *rightBtn;
     UIImageView *topBackView;
     UILabel *loginStateLab;
     UIButton *loginBnt;
+    UITableView *mainTableView;
+    
+    NSArray *array;
+    UIButton*logOutBnt;
+    NSString *cacheSizeStr;
+    UILabel  *cacheLab;
 }
-
 
 @end
