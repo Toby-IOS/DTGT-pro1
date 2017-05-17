@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DTGTPersonalViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>{
+@interface DTGTPersonalViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate>{
 
 
 

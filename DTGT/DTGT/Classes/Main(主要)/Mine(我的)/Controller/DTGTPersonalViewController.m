@@ -94,6 +94,7 @@
     if(indexPath.row==0){
         
         NSLog(@"身份认证");
+        [self changeAvata];
         
     }else  if(indexPath.row==1){
         NSLog(@"个人资料");
@@ -112,6 +113,29 @@
 
     
 }
+
+-(void)changeAvata{
+    
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]initWithTitle:  @"更新头像" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照", @"从相册选择",nil];
+    actionSheet.actionSheetStyle=UIActionSheetStyleDefault;
+    
+    [actionSheet showInView:self.view];
+}
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if(buttonIndex==0){
+        NSLog(@"拍照");
+    }
+    if(buttonIndex==1){
+        NSLog(@"相册");
+    }
+    
+}
+
+
+
+
+
 /**点击左键返回执行的方法*/
 -(void)leftBtnClick{
     
