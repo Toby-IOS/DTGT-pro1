@@ -14,6 +14,18 @@
 
     UITableView *mainTableView;
     
-    NSArray *array;}
+    NSArray *array;
+    UIActionSheet *sexSheet;
+    UIActionSheet *avataSeet;
+    
+    NSArray *provinces;//省份
+    NSArray *cities;//城市
+    
+//    NSString *areaString;//所在地区
+//    NSString *provinceStr;
+//    NSString *cityStr;
+//    UIActionSheet *areaSeet;
+    
+}
 
 @end

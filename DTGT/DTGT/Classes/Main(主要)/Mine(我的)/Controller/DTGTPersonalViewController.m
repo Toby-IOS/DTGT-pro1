@@ -8,6 +8,7 @@
 
 #import "DTGTPersonalViewController.h"
 #import "macros.pch"
+#import "TobyCityPicker.h"
 @interface DTGTPersonalViewController ()
 
 @end
@@ -101,35 +102,70 @@
         
     }else  if(indexPath.row==2){
         
-        NSLog(@"客服咨询");
+     
     }else  if(indexPath.row==3){
         
-   
+      [self changeSex];
         
     }else  if(indexPath.row==4){
       
-        
+        [self changeArea];
     }
 
     
 }
+-(void)changeArea{
+
+  
+    TobyCityPicker *cityPicker=[[TobyCityPicker alloc]init];
+    [cityPicker cityPikerGetSelectCity:^(NSMutableDictionary *dicSelectCity) {
+    
+         NSString *provinceStr = [dicSelectCity objectForKey:@"Province"];
+         NSString *cityStr = [dicSelectCity objectForKey:@"City"];
+         NSString *areaString=[NSString stringWithFormat:@"%@ %@",provinceStr,cityStr];
+         NSLog(@"areaString==%@",areaString);
+        
+    }];
+    
+}
+
+
+-(void)changeSex{
+
+     sexSheet=[[UIActionSheet alloc]initWithTitle: nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"男", @"女",nil];
+    sexSheet.actionSheetStyle=UIActionSheetStyleDefault;
+    
+    [sexSheet showInView:self.view];
+
+}
+
+
 
 -(void)changeAvata{
     
-    UIActionSheet *actionSheet=[[UIActionSheet alloc]initWithTitle:  @"更新头像" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照", @"从相册选择",nil];
-    actionSheet.actionSheetStyle=UIActionSheetStyleDefault;
-    
-    [actionSheet showInView:self.view];
+     avataSeet=[[UIActionSheet alloc]initWithTitle:  @"更新头像" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照", @"从相册选择",nil];
+    avataSeet.actionSheetStyle=UIActionSheetStyleDefault;
+    [avataSeet showInView:self.view];
 }
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if(actionSheet==avataSeet){
     if(buttonIndex==0){
         NSLog(@"拍照");
     }
     if(buttonIndex==1){
         NSLog(@"相册");
     }
+    }else {
     
+        if(buttonIndex==0){
+            NSLog(@"男");
+        }
+        if(buttonIndex==1){
+            NSLog(@"女");
+        }
+    
+    }
 }
 
 
