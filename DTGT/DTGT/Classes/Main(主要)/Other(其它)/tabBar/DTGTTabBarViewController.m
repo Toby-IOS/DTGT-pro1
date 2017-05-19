@@ -104,13 +104,13 @@
     }
 }
 -(void)btnClick:(id)sender{
-    int i=[sender tag];
-    NSLog(@"ta======%i",i);
-    if(i!=2){
+//    int i=[sender tag];
+//    NSLog(@"ta======%i",i);
+//    if(i!=2){
 //        GJLfabuViewController*fabuVC=[[GJLfabuViewController alloc]init];
 //        [self presentViewController:fabuVC animated:YES completion:nil
 //         ];
-    }
+//    }
     //取消蒙层
     [_maskView block:^{
         NSLog(@"取消之后");

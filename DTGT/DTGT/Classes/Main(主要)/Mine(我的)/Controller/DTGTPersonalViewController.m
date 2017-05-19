@@ -9,6 +9,7 @@
 #import "DTGTPersonalViewController.h"
 #import "macros.pch"
 #import "TobyCityPicker.h"
+#import "DTGTChangePersonalInfoViewController.h"
 @interface DTGTPersonalViewController ()
 
 @end
@@ -19,28 +20,28 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.view setBackgroundColor:[UIColor whiteColor]];
+     self.navigationItem.title=@"个人资料";
     
-    
-    UIImageView *itemBgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kBoundsSize.width, 64)];
-    [itemBgView setImage:[UIImage imageNamed:@"navigatebar"]];
-    itemBgView.userInteractionEnabled=YES;
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake((kBoundsSize.width-100)/2,20, 100, 44)];
-    title.text = @"个人资料";
-    title.textAlignment = NSTextAlignmentCenter;
-    title.textColor =[UIColor whiteColor];
-    title.font = [UIFont fontWithName:@"Helvetica" size:18.0];
-    [itemBgView addSubview:title];
-    [self.view addSubview:itemBgView];
-    
-    UIButton *leftBarBnt = [[UIButton alloc] initWithFrame:CGRectMake(5, 20, 50, 44)];
-    leftBarBnt.backgroundColor=[UIColor clearColor];
-    [leftBarBnt setImage:[UIImage imageNamed:@"Industrychoose_return.png"] forState:UIControlStateNormal];
-    [leftBarBnt setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [leftBarBnt addTarget:self action:@selector(leftBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [itemBgView addSubview:leftBarBnt];
+//    UIImageView *itemBgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kBoundsSize.width, 64)];
+//    [itemBgView setImage:[UIImage imageNamed:@"navigatebar"]];
+//    itemBgView.userInteractionEnabled=YES;
+//    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake((kBoundsSize.width-100)/2,20, 100, 44)];
+//    title.text = @"个人资料";
+//    title.textAlignment = NSTextAlignmentCenter;
+//    title.textColor =[UIColor whiteColor];
+//    title.font = [UIFont fontWithName:@"Helvetica" size:18.0];
+//    [itemBgView addSubview:title];
+//    [self.view addSubview:itemBgView];
+//    
+//    UIButton *leftBarBnt = [[UIButton alloc] initWithFrame:CGRectMake(5, 20, 50, 44)];
+//    leftBarBnt.backgroundColor=[UIColor clearColor];
+//    [leftBarBnt setImage:[UIImage imageNamed:@"Industrychoose_return.png"] forState:UIControlStateNormal];
+//    [leftBarBnt setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [leftBarBnt addTarget:self action:@selector(leftBtnClick) forControlEvents:UIControlEventTouchUpInside];
+//    [itemBgView addSubview:leftBarBnt];
     array=[NSArray arrayWithObjects:@"头像",@"昵称                                                                   Toby",@"我的二维码",
            @"性别                                                                   未知",
-           @"所在地                                                  北京市 海淀区",@"收货地址",@"文玩经验",@"收藏业务                                        石头，文玩，雕刻 ",nil];
+           @"所在地                                                  北京市 海淀区",@"收货地址",@"收藏爱好                                        石头，文玩，雕刻 ",nil];
     
     mainTableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 60, kBoundsSize.width, kBoundsSize.height-49-270)];
     mainTableView.dataSource=self;
@@ -94,14 +95,14 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.row==0){
         
-        NSLog(@"身份认证");
         [self changeAvata];
         
     }else  if(indexPath.row==1){
-        NSLog(@"个人资料");
+        
+        [self changePersonInfo:@"昵称" withContent:@"Toby"];
         
     }else  if(indexPath.row==2){
-        
+
      
     }else  if(indexPath.row==3){
         
@@ -110,6 +111,12 @@
     }else  if(indexPath.row==4){
       
         [self changeArea];
+    }else if(indexPath.row==5){
+    
+       
+    }else if(indexPath.row==6){
+        
+        [self  changePersonInfo:@"收藏爱好" withContent:@"石头，文玩，雕刻"];
     }
 
     
@@ -148,6 +155,14 @@
     [avataSeet showInView:self.view];
 }
 
+-(void)changePersonInfo:(NSString*)title withContent:(NSString*)string{
+
+    DTGTChangePersonalInfoViewController *pIVC=[[DTGTChangePersonalInfoViewController alloc]initWithString:title withContent:string];
+    
+    [self.navigationController pushViewController:pIVC animated:YES];
+
+
+}
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     if(actionSheet==avataSeet){
     if(buttonIndex==0){

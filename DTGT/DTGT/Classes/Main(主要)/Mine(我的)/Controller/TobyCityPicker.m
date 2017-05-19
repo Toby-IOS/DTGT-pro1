@@ -35,13 +35,24 @@
 - (void)initCityPickerView{
     [self getCityData];
     self.frame=[UIScreen mainScreen].bounds;
-    self.backgroundColor=[UIColor clearColor];
+    self.backgroundColor=[UIColor blackColor];
+    self.alpha = 0.5;
+    
+    UIGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backgroundTapped)];
+    [self addGestureRecognizer:gesture];
+  
+    
+    
+    
+    
     
     //一个选择器
     _cityPicker=[[UIPickerView alloc] initWithFrame:CGRectMake(0, KScreenHeight-216, KScreenWidth, 216)];
     _cityPicker.delegate=self;
     _cityPicker.dataSource=self;
+    _cityPicker.backgroundColor=[UIColor whiteColor];
     [self addSubview:_cityPicker];
+    
     //一个工具栏
     UIView *viewTool=[[UIView alloc] initWithFrame:CGRectMake(0, KScreenHeight-216-44, KScreenWidth, 44)];
     UIColor *color=[UIColor colorWithRed:230/256.0 green:230/256.0 blue:230/256.0 alpha:1];
@@ -203,18 +214,21 @@
         myView.textAlignment = 1;
         myView.text = [[_arrProvince objectAtIndex:row] objectForKey:@"name"];
         myView.font = [UIFont systemFontOfSize:14];
+        myView.textColor=[UIColor blackColor];
         myView.backgroundColor = [UIColor clearColor];
     }else if (component == CITY_COMPONENT) {
         myView = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, KScreenWidth/3.0, 30)];
         myView.textAlignment = 1;
         myView.text = [[_arrCity objectAtIndex:row] objectForKey:@"name"];
         myView.font = [UIFont systemFontOfSize:14];
+        myView.textColor=[UIColor blackColor];
         myView.backgroundColor = [UIColor clearColor];
     }else {
         myView = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, KScreenWidth/3.0, 30)];
         myView.textAlignment = 1;
         myView.text = [_arrDistrict objectAtIndex:row];
         myView.font = [UIFont systemFontOfSize:14];
+        myView.textColor=[UIColor blackColor];
         myView.backgroundColor = [UIColor clearColor];
     }
     
@@ -238,6 +252,7 @@
 - (void)btnSureAction{
     [self cityPickerSetSelectCity];
     [self disMissCityPicker];
+    self.backgroundColor=[UIColor clearColor];
 }
 - (void)showSkyerCityPicker{
     [[UIApplication sharedApplication].keyWindow addSubview:self];
@@ -245,6 +260,12 @@
 }
 -(void)disMissCityPicker{
     [self removeFromSuperview];
+    self.backgroundColor=[UIColor clearColor];
+}
+
+-(void)backgroundTapped{
+ 
+    [self disMissCityPicker];
 }
 
 @end
