@@ -11,7 +11,7 @@
 @interface TobyCityPicker : UIView<UIPickerViewDelegate, UIPickerViewDataSource>
 
 typedef void (^getSelectCity) (NSMutableDictionary *dicSelectCity);
-@property (nonatomic,weak) getSelectCity getSelectCity;
+@property (nonatomic,strong) getSelectCity getSelectCity;
 
 
 @property NSArray *arrProvince;
@@ -25,5 +25,5 @@ typedef void (^getSelectCity) (NSMutableDictionary *dicSelectCity);
 /*block获取选择的城市的信息
  */
 - (void)cityPikerGetSelectCity:(getSelectCity)getSelectCity;
-
+- (void)cityPickerSetSelectCity;
 @end

@@ -10,6 +10,7 @@
 #import "macros.pch"
 #import "TobyCityPicker.h"
 #import "DTGTChangePersonalInfoViewController.h"
+#import "DTGTAddressViewController.h"
 @interface DTGTPersonalViewController ()
 
 @end
@@ -113,13 +114,19 @@
         [self changeArea];
     }else if(indexPath.row==5){
     
-       
+        [self changeAddress];
     }else if(indexPath.row==6){
         
         [self  changePersonInfo:@"收藏爱好" withContent:@"石头，文玩，雕刻"];
     }
 
     
+}
+-(void)changeAddress{
+    DTGTAddressViewController *addAdressVC=[[DTGTAddressViewController alloc]init];
+    [self.navigationController pushViewController:addAdressVC animated:YES];
+
+
 }
 -(void)changeArea{
 
