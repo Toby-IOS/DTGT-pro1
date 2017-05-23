@@ -130,10 +130,11 @@
     
 
  
-    homeTableView =[[UITableView alloc]initWithFrame:CGRectMake(0, 0, WITCH,HEIGHT-64-49+70)];
+    homeTableView =[[UITableView alloc]initWithFrame:CGRectMake(0, 0, WITCH,HEIGHT-64-49+70) style:UITableViewStylePlain];
     homeTableView.delegate=self;
     homeTableView.dataSource=self;
     homeTableView.tableHeaderView=headerView;
+  
     
     [self.view addSubview:homeTableView];
     
