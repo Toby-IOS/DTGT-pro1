@@ -33,7 +33,7 @@
     UILabel *titleLab=[[UILabel alloc]initWithFrame:CGRectMake(0, 170, WITCH, 30)];
     titleLab.textColor=[UIColor whiteColor];
     titleLab.text=@"           收藏                         分享                          积分 ";
-    titleLab.font=[UIFont systemFontOfSize:14.0f];
+    titleLab.font=[UIFont systemFontOfSize:15.0f];
     [bgView addSubview:titleLab ];
     
     
@@ -119,7 +119,7 @@
 //    [self.view addSubview:logOutBnt];
     
     
-    array=[NSArray arrayWithObjects:@"身份认证",@"个人资料",@"客服咨询",@"清空缓存",@"设置",nil];
+    array=[NSArray arrayWithObjects:@"个人资料",@" 实名认证",@"客服与帮助",@"设置",nil];
     
     mainTableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 200, kBoundsSize.width, kBoundsSize.height-49)];
     mainTableView.backgroundColor=[UIColor clearColor];
@@ -186,53 +186,54 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 40;
+    return 50;
 }
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UITableViewCell *cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
     cell.textLabel.text=[array objectAtIndex:indexPath.row];
-    cell.textLabel.font=[UIFont fontWithName:@"Helvetica" size:14.0];
+    cell.textLabel.font=[UIFont fontWithName:@"Helvetica" size:15.0];
     cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle=UITableViewCellAccessoryNone;
-    if(indexPath.row==3){
-        if(!cacheLab)
-            cacheLab=[[UILabel alloc]initWithFrame:CGRectMake(WITCH-150, 5, 120, 30)];
-        cacheLab.text=[NSString stringWithFormat:@"%.2fKB", [self readCacheSize] *1024];;
-        cacheLab.textAlignment=NSTextAlignmentRight;
-        cacheLab.font=[UIFont fontWithName:@"Helvetica" size:12.0];
-        cacheLab.textColor=[UIColor grayColor];
-        [cell addSubview:cacheLab];
-    }
+//    if(indexPath.row==3){
+//        if(!cacheLab)
+//            cacheLab=[[UILabel alloc]initWithFrame:CGRectMake(WITCH-150, 5, 120, 30)];
+//        cacheLab.text=[NSString stringWithFormat:@"%.2fKB", [self readCacheSize] *1024];;
+//        cacheLab.textAlignment=NSTextAlignmentRight;
+//        cacheLab.font=[UIFont fontWithName:@"Helvetica" size:12.0];
+//        cacheLab.textColor=[UIColor grayColor];
+//        [cell addSubview:cacheLab];
+//    }
     return  cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.row==0){
         
-      NSLog(@"身份认证");
-        DTGTIdentityViewController *idVC=[[DTGTIdentityViewController alloc]init];
-        idVC.hidesBottomBarWhenPushed=YES;
-        [ self.navigationController pushViewController:idVC animated:YES];
-        
-    }else  if(indexPath.row==1){
-            NSLog(@"个人资料");
-    
         DTGTPersonalViewController *psVC=[[DTGTPersonalViewController alloc]init];
         psVC.hidesBottomBarWhenPushed=YES;
         [ self.navigationController pushViewController:psVC animated:YES];
+        
      
+        
+    }else  if(indexPath.row==1){
+        
+        DTGTIdentityViewController *idVC=[[DTGTIdentityViewController alloc]init];
+        idVC.hidesBottomBarWhenPushed=YES;
+        [ self.navigationController pushViewController:idVC animated:YES];
+      
     }else  if(indexPath.row==2){
      
           NSLog(@"客服咨询");
     }else  if(indexPath.row==3){
         
-        [self clearFile];
-        
-    }else  if(indexPath.row==4){
-        NSLog(@"rightButtonOnClick");
+//        [self clearFile];
         GJLSeetingViewController *stVC=[[GJLSeetingViewController alloc]init];
         stVC.hidesBottomBarWhenPushed=YES;
         [ self.navigationController pushViewController:stVC animated:YES];
+        
+    }else  if(indexPath.row==4){
+        NSLog(@"rightButtonOnClick");
+     
         
     }
     

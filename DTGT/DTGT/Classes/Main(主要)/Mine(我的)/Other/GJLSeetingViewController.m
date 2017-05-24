@@ -18,7 +18,7 @@
 @implementation GJLSeetingViewController
 
 - (void)viewDidLoad {
-    [self.view setBackgroundColor:ZPJColor(245, 245, 245)];
+    [self.view setBackgroundColor:ZPJColor(225, 225, 225)];
     [self.navigationController setNavigationBarHidden:NO];
     self.navigationItem.title=@"设置";
     [super viewDidLoad];
@@ -51,7 +51,7 @@
     [self.view addSubview:logOutBnt];
 
     
-    array=[NSArray arrayWithObjects:@"分享",@"关于我们", nil];
+    array=[NSArray arrayWithObjects:@"清除缓存",@"分享",@"关于我们", nil];
     
     mainTableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 64, kBoundsSize.width, kBoundsSize.height-64)];
     mainTableView.dataSource=self;
@@ -94,29 +94,29 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 40;
+    return 50;
 }
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UITableViewCell *cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
     cell.textLabel.text=[array objectAtIndex:indexPath.row];
-    cell.textLabel.font=[UIFont fontWithName:@"Helvetica" size:14.0];
+    cell.textLabel.font=[UIFont fontWithName:@"Helvetica" size:15.0];
     cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle=UITableViewCellAccessoryNone;
-//    if(indexPath.row==1){
-//     if(!cacheLab)
-//        cacheLab=[[UILabel alloc]initWithFrame:CGRectMake(WITCH-150, 5, 120, 30)];
-//        cacheLab.text=[NSString stringWithFormat:@"%.2fKB", [self readCacheSize] *1024];;
-//        cacheLab.textAlignment=NSTextAlignmentRight;
-//        cacheLab.font=[UIFont fontWithName:@"Helvetica" size:12.0];
-//        cacheLab.textColor=[UIColor grayColor];
-//        [cell addSubview:cacheLab];
-//    }
+    if(indexPath.row==0){
+     if(!cacheLab)
+        cacheLab=[[UILabel alloc]initWithFrame:CGRectMake(WITCH-150, 10, 120, 30)];
+        cacheLab.text=[NSString stringWithFormat:@"%.2fKB", [self readCacheSize] *1024];;
+        cacheLab.textAlignment=NSTextAlignmentRight;
+        cacheLab.font=[UIFont fontWithName:@"Helvetica" size:13.0];
+        cacheLab.textColor=[UIColor grayColor];
+        [cell addSubview:cacheLab];
+    }
     return  cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if(indexPath.row==1){
+    if(indexPath.row==0){
         [self clearFile];
     }
     

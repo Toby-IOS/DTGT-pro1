@@ -7,7 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TextField.h"
 
-@interface DTGTIdentityViewController : UIViewController
+@interface DTGTIdentityViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,TextFieldDelegate>
+{
 
+    TextField *nameField;
+    TextField *cardNumberField;
+
+ 
+}
+@property(nonatomic,strong)   UITableView *mainView;
 @end

@@ -74,7 +74,7 @@
     _textField.text=contentStr;
     _textField.textColor=[UIColor grayColor];
     _textField.backgroundColor=[UIColor whiteColor];
-    _textField.font = [UIFont fontWithName:@"Helvetica" size:13.0];
+    _textField.font = [UIFont fontWithName:@"Helvetica" size:14.0];
     _textField.returnKeyType=UIReturnKeyDone;
     _textField.delegate=self;
     _textField.clearButtonMode = UITextFieldViewModeAlways;
@@ -88,7 +88,7 @@
     _textView.text=contentStr;
     _textView.textColor=[UIColor grayColor];
     _textView.backgroundColor=[UIColor whiteColor];
-    _textView.font = [UIFont fontWithName:@"Helvetica" size:13.0];
+    _textView.font = [UIFont fontWithName:@"Helvetica" size:14.0];
     _textView.returnKeyType=UIReturnKeyDone;
     _textView.textAlignment=NSTextAlignmentLeft;
     _textView.delegate=self;

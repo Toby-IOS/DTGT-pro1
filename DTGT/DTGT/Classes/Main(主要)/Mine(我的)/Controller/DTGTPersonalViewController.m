@@ -24,7 +24,7 @@
      self.navigationItem.title=@"个人资料";
     [self.navigationController setNavigationBarHidden:NO];
     
-    myAvataView=[[UIImageView alloc]initWithFrame:CGRectMake(WITCH-75, 5, 50, 50)];
+    myAvataView=[[UIImageView alloc]initWithFrame:CGRectMake(WITCH-90, 10, 60, 60)];
     myAvataView.image=[UIImage imageNamed:@"people1.png"];
     myAvataView.layer.cornerRadius=myAvataView.frame.size.width/2;
     myAvataView.layer.masksToBounds=YES;
@@ -48,9 +48,9 @@
 //    [leftBarBnt setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 //    [leftBarBnt addTarget:self action:@selector(leftBtnClick) forControlEvents:UIControlEventTouchUpInside];
 //    [itemBgView addSubview:leftBarBnt];
-    array=[NSArray arrayWithObjects:@"头像",@"昵称                                                                   Toby",@"我的二维码",
-           @"性别                                                                   未知",
-           @"所在地                                                  北京市 海淀区",@"收货地址",@"收藏爱好                                        石头，文玩，雕刻 ",nil];
+    array=[NSArray arrayWithObjects:@"头像",@"昵称                                                             Toby",@"我的二维码",
+           @"性别                                                               未知",
+           @"所在地                                           北京市 海淀区",@"收货地址",@"收藏爱好                                 石头，文玩，雕刻 ",nil];
     
     mainTableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, kBoundsSize.width, kBoundsSize.height-49)];
     mainTableView.dataSource=self;
@@ -86,18 +86,18 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if(indexPath.row==0||indexPath.row==2){
+    if(indexPath.row==0){
     
-        return 60;
+        return 80;
     }else {
-    return 40;
+    return 50;
     }
 }
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UITableViewCell *cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
     cell.textLabel.text=[array objectAtIndex:indexPath.row];
-    cell.textLabel.font=[UIFont fontWithName:@"Helvetica" size:14.0];
+    cell.textLabel.font=[UIFont fontWithName:@"Helvetica" size:15.0];
     cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle=UITableViewCellAccessoryNone;
     if(indexPath.row==0)
@@ -105,7 +105,7 @@
         [cell addSubview:myAvataView];
     }else if(indexPath.row==2){
     
-        UIImageView *imgView=[[UIImageView alloc]initWithFrame:CGRectMake(WITCH-75, 5, 50, 50)];
+        UIImageView *imgView=[[UIImageView alloc]initWithFrame:CGRectMake(WITCH-70, 10, 30, 30)];
         imgView.image=[UIImage imageNamed:@"qr.png"];
         [cell addSubview:imgView];
     
