@@ -20,10 +20,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [super viewDidLoad];
     //    self.navigationItem.title=@"我的";
     self.navigationController.navigationBarHidden=YES;
-
+    [self.view setBackgroundColor:ZPJColor(225, 225, 225)];
     
     UIImageView *bgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kBoundsSize.width,200)];
     [bgView setImage:[UIImage imageNamed:@"person_bgImage"]];
@@ -122,10 +121,24 @@
     
     array=[NSArray arrayWithObjects:@"身份认证",@"个人资料",@"客服咨询",@"清空缓存",@"设置",nil];
     
-    mainTableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 200, kBoundsSize.width, kBoundsSize.height-49-420)];
+    mainTableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 200, kBoundsSize.width, kBoundsSize.height-49)];
+    mainTableView.backgroundColor=[UIColor clearColor];
     mainTableView.dataSource=self;
     mainTableView.delegate=self;
+    [self setExtraCellLineHidden:mainTableView];
     [self.view addSubview:mainTableView];
+}
+
+-(void)setExtraCellLineHidden: (UITableView *)tableView
+
+{
+    
+    UIView *view = [UIView new];
+    
+    view.backgroundColor = [UIColor clearColor];
+    
+    [tableView setTableFooterView:view];
+    
 }
 -(void)loginAction{
     UserLoginViewController* login=[[UserLoginViewController alloc]init];
@@ -136,6 +149,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
+    [self.navigationController setNavigationBarHidden:YES];
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     
     if([[userDefault objectForKey:kIsStorePassword] isEqualToString:@"1"]){
@@ -148,8 +162,6 @@
 //        logOutBnt.hidden=YES;
     }
 }
-
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

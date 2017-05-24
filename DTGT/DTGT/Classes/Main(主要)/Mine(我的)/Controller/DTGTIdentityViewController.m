@@ -16,6 +16,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.navigationController setNavigationBarHidden:NO];
+    self.navigationItem.title=@"身份认证";
     // Do any additional setup after loading the view from its nib.
     UIImageView *itemBgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kBoundsSize.width, 64)];
     [itemBgView setImage:[UIImage imageNamed:@"navigatebar"]];

@@ -18,7 +18,9 @@
 @implementation GJLSeetingViewController
 
 - (void)viewDidLoad {
-    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self.view setBackgroundColor:ZPJColor(245, 245, 245)];
+    [self.navigationController setNavigationBarHidden:NO];
+    self.navigationItem.title=@"设置";
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     UIImageView *itemBgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kBoundsSize.width, 64)];
@@ -51,13 +53,25 @@
     
     array=[NSArray arrayWithObjects:@"分享",@"关于我们", nil];
     
-    mainTableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 64+50, kBoundsSize.width, kBoundsSize.height-64-49-440)];
+    mainTableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 64, kBoundsSize.width, kBoundsSize.height-64)];
     mainTableView.dataSource=self;
     mainTableView.delegate=self;
-
+    [mainTableView setBackgroundColor:[UIColor clearColor]];
+    [self setExtraCellLineHidden:mainTableView];
     
     [self.view addSubview:mainTableView];
 
+}
+-(void)setExtraCellLineHidden: (UITableView *)tableView
+
+{
+    
+    UIView *view = [UIView new];
+    
+    view.backgroundColor = [UIColor clearColor];
+    
+    [tableView setTableFooterView:view];
+    
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];

@@ -20,8 +20,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self.view setBackgroundColor:ZPJColor(225, 225, 225)];
      self.navigationItem.title=@"个人资料";
+    [self.navigationController setNavigationBarHidden:NO];
+    
+    myAvataView=[[UIImageView alloc]initWithFrame:CGRectMake(WITCH-75, 5, 50, 50)];
+    myAvataView.image=[UIImage imageNamed:@"people1.png"];
+    myAvataView.layer.cornerRadius=myAvataView.frame.size.width/2;
+    myAvataView.layer.masksToBounds=YES;
+    myAvataView.layer.borderWidth=1.5f;
+    myAvataView.layer.borderColor=[UIColor whiteColor].CGColor;
     
 //    UIImageView *itemBgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kBoundsSize.width, 64)];
 //    [itemBgView setImage:[UIImage imageNamed:@"navigatebar"]];
@@ -44,12 +52,25 @@
            @"性别                                                                   未知",
            @"所在地                                                  北京市 海淀区",@"收货地址",@"收藏爱好                                        石头，文玩，雕刻 ",nil];
     
-    mainTableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 60, kBoundsSize.width, kBoundsSize.height-49-270)];
+    mainTableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, kBoundsSize.width, kBoundsSize.height-49)];
     mainTableView.dataSource=self;
     mainTableView.delegate=self;
+    mainTableView.backgroundColor=[UIColor clearColor];
+    mainTableView.showsVerticalScrollIndicator = NO;
+    [self setExtraCellLineHidden:mainTableView];
     [self.view addSubview:mainTableView];
 }
+-(void)setExtraCellLineHidden: (UITableView *)tableView
 
+{
+    
+    UIView *view = [UIView new];
+    
+    view.backgroundColor = [UIColor clearColor];
+    
+    [tableView setTableFooterView:view];
+    
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -67,7 +88,7 @@
     
     if(indexPath.row==0||indexPath.row==2){
     
-        return 50;
+        return 60;
     }else {
     return 40;
     }
@@ -79,13 +100,12 @@
     cell.textLabel.font=[UIFont fontWithName:@"Helvetica" size:14.0];
     cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle=UITableViewCellAccessoryNone;
-    if(indexPath.row==0){
-        UIImageView *imgView=[[UIImageView alloc]initWithFrame:CGRectMake(WITCH-80, 5, 40, 40)];
-        imgView.image=[UIImage imageNamed:@"people1.png"];
-        [cell addSubview:imgView];
+    if(indexPath.row==0)
+    {
+        [cell addSubview:myAvataView];
     }else if(indexPath.row==2){
     
-        UIImageView *imgView=[[UIImageView alloc]initWithFrame:CGRectMake(WITCH-80, 5, 40, 40)];
+        UIImageView *imgView=[[UIImageView alloc]initWithFrame:CGRectMake(WITCH-75, 5, 50, 50)];
         imgView.image=[UIImage imageNamed:@"qr.png"];
         [cell addSubview:imgView];
     
@@ -173,10 +193,28 @@
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     if(actionSheet==avataSeet){
     if(buttonIndex==0){
+        UIImagePickerController *PickerImage = [[UIImagePickerController alloc]init];
+        //获取方式:通过相机
+        PickerImage.sourceType = UIImagePickerControllerSourceTypeCamera;
+        PickerImage.allowsEditing = YES;
+        PickerImage.delegate = self;
+        [self presentViewController:PickerImage animated:YES completion:nil];
         NSLog(@"拍照");
     }
     if(buttonIndex==1){
         NSLog(@"相册");
+        //初始化UIImagePickerController
+        UIImagePickerController *PickerImage = [[UIImagePickerController alloc]init];
+        //获取方式1：通过相册（呈现全部相册），UIImagePickerControllerSourceTypePhotoLibrary
+        //获取方式2，通过相机，UIImagePickerControllerSourceTypeCamera
+        //获取方法3，通过相册（呈现全部图片），UIImagePickerControllerSourceTypeSavedPhotosAlbum
+        PickerImage.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        //允许编辑，即放大裁剪
+        PickerImage.allowsEditing = YES;
+        //自代理
+        PickerImage.delegate = self;
+        //页面跳转
+        [self presentViewController:PickerImage animated:YES completion:nil];
     }
     }else {
     
@@ -190,7 +228,13 @@
     }
 }
 
-
+//PickerImage完成后的代理方法
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
+    //定义一个newPhoto，用来存放我们选择的图片。
+    UIImage *newPhoto = [info objectForKey:@"UIImagePickerControllerEditedImage"];
+    myAvataView.image = newPhoto;
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 
 

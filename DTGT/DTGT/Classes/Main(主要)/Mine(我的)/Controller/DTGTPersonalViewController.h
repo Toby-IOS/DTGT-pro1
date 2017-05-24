@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DTGTPersonalViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate>{
+@interface DTGTPersonalViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate,UIImagePickerControllerDelegate>{
 
 
 
@@ -25,6 +25,8 @@
 //    NSString *provinceStr;
 //    NSString *cityStr;
 //    UIActionSheet *areaSeet;
+    
+    UIImageView *myAvataView;
     
 }
 
