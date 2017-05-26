@@ -8,12 +8,23 @@
 
 #import <UIKit/UIKit.h>
 
+
+
+
 @interface DTGTChangePersonalInfoViewController : UIViewController<UITextFieldDelegate,UITextViewDelegate>
 {
    NSString *titleStr;
    NSString* contentStr;
 }
-
+typedef void (^ReturnTextBlock)(NSMutableDictionary*showTextDic);
 -(instancetype)initWithString:(NSString*)titleString withContent:(NSString*)string;
+
+@property(copy,nonatomic)ReturnTextBlock textBlock;
+@property (nonatomic,copy)NSString *string;
+@property (nonatomic,copy)NSMutableDictionary *dic;
+
+
+//-(void)testLabBlock;
+-(void)returnText:(ReturnTextBlock)block;
 
 @end

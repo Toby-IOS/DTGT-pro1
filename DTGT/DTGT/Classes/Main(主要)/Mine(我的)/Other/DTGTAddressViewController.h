@@ -10,6 +10,7 @@
 #import "AdressModel.h"
 
 typedef void (^selectGoodAddressBlock)(AdressModel *model);
+typedef void(^SelectNewAddressBlock)(NSString * string);
 @interface DTGTAddressViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate>{
 
     UIView * emptyView;
@@ -19,6 +20,11 @@ typedef void (^selectGoodAddressBlock)(AdressModel *model);
 
 
 }
+
 @property(nonatomic,strong)UITableView *maintTbale;
 @property(nonatomic,copy)selectGoodAddressBlock  selectAddressBlock;
+
+
+@property(nonatomic,copy)SelectNewAddressBlock  selectNewAddressBlock;
+-(void)selectAddress:(SelectNewAddressBlock) block;
 @end

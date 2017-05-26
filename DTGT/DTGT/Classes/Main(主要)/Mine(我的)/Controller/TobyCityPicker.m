@@ -36,7 +36,7 @@
     [self getCityData];
     self.frame=[UIScreen mainScreen].bounds;
     self.backgroundColor=[UIColor blackColor];
-    self.alpha = 0.5;
+    self.alpha = 0.6;
     
     UIGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backgroundTapped)];
     [self addGestureRecognizer:gesture];
@@ -58,9 +58,11 @@
     UIColor *color=[UIColor colorWithRed:230/256.0 green:230/256.0 blue:230/256.0 alpha:1];
     viewTool.backgroundColor=color;
     [self addSubview:viewTool];
+    UIFont *font=[UIFont systemFontOfSize:15.0f];
     //一个取消按钮
     UIButton *btnCancel=[[UIButton alloc] initWithFrame:CGRectMake(5, 5, 40, 30)];
     [btnCancel setTitle:@"取消" forState:UIControlStateNormal];
+    btnCancel.titleLabel.font=font;
     [btnCancel setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [btnCancel setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
     [btnCancel addTarget:self action:@selector(btnCancelAction) forControlEvents:UIControlEventTouchUpInside];
@@ -68,6 +70,7 @@
     //一个确定按钮
     UIButton *btnSure=[[UIButton alloc] initWithFrame:CGRectMake(KScreenWidth-45, 5, 40, 30)];
     [btnSure setTitle:@"确定" forState:UIControlStateNormal];
+     btnSure.titleLabel.font=font;
     [btnSure setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [btnSure setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
     [btnSure addTarget:self action:@selector(btnSureAction) forControlEvents:UIControlEventTouchUpInside];
@@ -75,6 +78,7 @@
     //一个显示城市的lab
     _btnSelectShow=[[UILabel alloc] initWithFrame:CGRectMake(50, 5, KScreenWidth-100, 30)];
     _btnSelectShow.text=@"北京市";
+    _btnSelectShow.font=font;
     _btnSelectShow.textAlignment=1;
     [viewTool addSubview:_btnSelectShow];
     [self animationWithView:_cityPicker duration:0.5];

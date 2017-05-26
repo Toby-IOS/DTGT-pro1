@@ -36,6 +36,9 @@
     [self.navigationController setNavigationBarHidden:NO];
     self.view.backgroundColor=[UIColor lightGrayColor];
     self.navigationItem.title=titleStr;
+    
+       _dic=[NSMutableDictionary dictionary];
+    
     if([titleStr isEqualToString:@"昵称"])
     {
         
@@ -57,6 +60,24 @@
 -(void)saveClick{
 
     [self.navigationController popViewControllerAnimated:YES];
+    NSString* testFieldStr=_textField.text;
+    NSString* textViewStr=_textView.text;
+ 
+    if(![testFieldStr isEqualToString:@""]){
+     [_dic setValue:testFieldStr forKey:@"testField"];
+
+    }
+    
+    if(![textViewStr isEqualToString:@""]){
+        [_dic setValue:textViewStr forKey:@"testView"];
+ 
+    }
+  
+
+    
+    if(_textBlock){
+        self.textBlock(_dic);
+    }
     
     NSLog(@"saveClick");
 }
@@ -71,7 +92,7 @@
 
     UITextField *textfield=[[UITextField alloc]initWithFrame:CGRectMake(0, 64+10, WITCH, 44)];
     _textField=textfield;
-    _textField.text=contentStr;
+//    _textField.text=contentStr;
     _textField.textColor=[UIColor grayColor];
     _textField.backgroundColor=[UIColor whiteColor];
     _textField.font = [UIFont fontWithName:@"Helvetica" size:14.0];
@@ -85,7 +106,7 @@
 
     UITextView *textView=[[UITextView alloc]initWithFrame:CGRectMake(0, 64+10, WITCH, 80)];
     _textView=textView;
-    _textView.text=contentStr;
+//    _textView.text=contentStr;
     _textView.textColor=[UIColor grayColor];
     _textView.backgroundColor=[UIColor whiteColor];
     _textView.font = [UIFont fontWithName:@"Helvetica" size:14.0];
@@ -112,11 +133,20 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     _textField.text=textField.text;
+;
+
     [_textField resignFirstResponder];
+ 
     return YES;
 }
 
 
+-(void)returnText:(ReturnTextBlock)block{
+
+    self.textBlock=block;
+
+
+}
 -(void)textViewDidBeginEditing:(UITextView *)textView{
 
     [_textView becomeFirstResponder];

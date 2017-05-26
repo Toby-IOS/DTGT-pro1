@@ -27,7 +27,19 @@
 //    UIActionSheet *areaSeet;
     
     UIImageView *myAvataView;
-    
+    UIImageView *myQrView;
+//    UILabel *myInfoLab;
+    UILabel *myAreaLab;
+//    UILabel *myAddressLab;
+    UILabel *mySexLab;
+//    UILabel *myhobbyLab;
 }
+//@property(nonatomic,strong)UIImageView *myAvataView;
+//@property(nonatomic,strong)  UIImageView *myQrView;
+@property(nonatomic,strong)UILabel *myInfoLab;
+//@property(nonatomic,strong)UILabel *myAreaLab;
+@property(nonatomic,strong)UILabel *myAddressLab;
+//@property(nonatomic,strong) UILabel *mySexLab;
+@property(nonatomic,strong) UILabel *myhobbyLab;
 
 @end

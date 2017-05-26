@@ -11,6 +11,7 @@
 #import "TobyCityPicker.h"
 #import "DTGTChangePersonalInfoViewController.h"
 #import "DTGTAddressViewController.h"
+#import "DTGTAddAddressViewController.h"
 @interface DTGTPersonalViewController ()
 
 @end
@@ -24,12 +25,50 @@
      self.navigationItem.title=@"个人资料";
     [self.navigationController setNavigationBarHidden:NO];
     
+    //初始化个人数据
     myAvataView=[[UIImageView alloc]initWithFrame:CGRectMake(WITCH-90, 10, 60, 60)];
-    myAvataView.image=[UIImage imageNamed:@"people1.png"];
+    myAvataView.image=[UIImage imageNamed:@"people1"];
     myAvataView.layer.cornerRadius=myAvataView.frame.size.width/2;
     myAvataView.layer.masksToBounds=YES;
     myAvataView.layer.borderWidth=1.5f;
     myAvataView.layer.borderColor=[UIColor whiteColor].CGColor;
+    
+    myQrView=[[UIImageView alloc]initWithFrame:CGRectMake(WITCH-70, 10, 30, 30)];
+    myQrView.image=[UIImage imageNamed:@"qr"];
+  
+    UIFont *font =[UIFont systemFontOfSize:13.0f];
+    
+    mySexLab=[[UILabel alloc]initWithFrame:CGRectMake(WITCH-140, 10, 100, 30)];
+    mySexLab.text=@"未知";
+    mySexLab.textColor=[UIColor grayColor];
+    mySexLab.font=font;
+    mySexLab.textAlignment=NSTextAlignmentRight;
+    
+    _myInfoLab=[[UILabel alloc]initWithFrame:CGRectMake(WITCH-140, 10, 100, 30)];
+    _myInfoLab.text=@"未知";
+    _myInfoLab.font=font;
+    _myInfoLab.textColor=[UIColor grayColor];
+    _myInfoLab.textAlignment=NSTextAlignmentRight;
+    
+    myAreaLab=[[UILabel alloc]initWithFrame:CGRectMake(WITCH-140, 10, 100, 30)];
+    myAreaLab.text=@"未知";
+    myAreaLab.font=font;
+    myAreaLab.textColor=[UIColor grayColor];
+    myAreaLab.textAlignment=NSTextAlignmentRight;
+    
+    _myAddressLab=[[UILabel alloc]initWithFrame:CGRectMake(WITCH-140, 10, 100, 30)];
+    _myAddressLab.text=@"未知";
+    _myAddressLab.font=font;
+    _myAddressLab.textColor=[UIColor grayColor];
+    _myAddressLab.textAlignment=NSTextAlignmentRight;
+    
+    _myhobbyLab=[[UILabel alloc]initWithFrame:CGRectMake(WITCH-140, 10, 100, 30)];
+    _myhobbyLab.text=@"未知";
+    _myhobbyLab.font=font;
+    _myhobbyLab.textColor=[UIColor grayColor];
+    _myhobbyLab.textAlignment=NSTextAlignmentRight;
+    
+    
     
 //    UIImageView *itemBgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kBoundsSize.width, 64)];
 //    [itemBgView setImage:[UIImage imageNamed:@"navigatebar"]];
@@ -48,9 +87,9 @@
 //    [leftBarBnt setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 //    [leftBarBnt addTarget:self action:@selector(leftBtnClick) forControlEvents:UIControlEventTouchUpInside];
 //    [itemBgView addSubview:leftBarBnt];
-    array=[NSArray arrayWithObjects:@"头像",@"昵称                                                             Toby",@"我的二维码",
-           @"性别                                                               未知",
-           @"所在地                                           北京市 海淀区",@"收货地址",@"收藏爱好                                 石头，文玩，雕刻 ",nil];
+    array=[NSArray arrayWithObjects:@"头像",@"昵称",@"我的二维码",
+           @"性别",
+           @"所在地",@"收货地址",@"收藏爱好",nil];
     
     mainTableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, kBoundsSize.width, kBoundsSize.height-49)];
     mainTableView.dataSource=self;
@@ -103,13 +142,48 @@
     if(indexPath.row==0)
     {
         [cell addSubview:myAvataView];
-    }else if(indexPath.row==2){
+        
+    }else if(indexPath.row==1){
     
-        UIImageView *imgView=[[UIImageView alloc]initWithFrame:CGRectMake(WITCH-70, 10, 30, 30)];
-        imgView.image=[UIImage imageNamed:@"qr.png"];
-        [cell addSubview:imgView];
+          [cell addSubview:_myInfoLab];
+   
     
     }
+    else if(indexPath.row==2){
+        
+          [cell addSubview:myQrView];
+        
+      
+        
+    }
+    else if(indexPath.row==3){
+        
+        
+        [cell addSubview:mySexLab];
+        
+    }
+    else if(indexPath.row==4){
+        
+        
+        [cell addSubview:myAreaLab];
+        
+    }
+    else if(indexPath.row==5){
+        
+        
+        [cell addSubview:_myAddressLab];
+        
+    }
+
+    else if(indexPath.row==6){
+        
+        
+        [cell addSubview:_myhobbyLab];
+        
+    }
+
+  
+
 
     return  cell;
 }
@@ -144,6 +218,10 @@
 }
 -(void)changeAddress{
     DTGTAddressViewController *addAdressVC=[[DTGTAddressViewController alloc]init];
+    [addAdressVC selectAddress:^(NSString *string) {
+        NSLog(@"string==%@",string);
+        _myAddressLab.text=string;
+    }];
     [self.navigationController pushViewController:addAdressVC animated:YES];
 
 
@@ -158,6 +236,7 @@
          NSString *cityStr = [dicSelectCity objectForKey:@"City"];
          NSString *areaString=[NSString stringWithFormat:@"%@ %@",provinceStr,cityStr];
          NSLog(@"areaString==%@",areaString);
+        myAreaLab.text=areaString;
         
     }];
     
@@ -184,9 +263,28 @@
 
 -(void)changePersonInfo:(NSString*)title withContent:(NSString*)string{
 
-    DTGTChangePersonalInfoViewController *pIVC=[[DTGTChangePersonalInfoViewController alloc]initWithString:title withContent:string];
+//    __weak UIViewController *blockSelf = self;
     
-    [self.navigationController pushViewController:pIVC animated:YES];
+    DTGTChangePersonalInfoViewController *pIVC=[[DTGTChangePersonalInfoViewController alloc]initWithString:title withContent:string];
+     [pIVC returnText:^(NSMutableDictionary *showTextDic) {
+    
+        
+         if([showTextDic objectForKey:@"testField"] !=nil){
+            
+            _myInfoLab.text=[showTextDic objectForKey:@"testField"];
+         }
+         
+         if([showTextDic objectForKey:@"testView"] !=nil){
+             _myhobbyLab.text=[showTextDic objectForKey:@"testView"];
+         }
+         
+         
+         
+        
+        
+     }];
+    
+     [self.navigationController pushViewController:pIVC animated:YES];
 
 
 }
@@ -220,9 +318,11 @@
     
         if(buttonIndex==0){
             NSLog(@"男");
+            mySexLab.text=@"男";
         }
         if(buttonIndex==1){
             NSLog(@"女");
+            mySexLab.text=@"女";
         }
     
     }

@@ -156,9 +156,24 @@
     [_maintTbale insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
 
     [DTGTAlertView showWithTitle:@"设置默认地址成功" andFont:14.0 andTime:2.0 andFrame:CGRectMake((kBoundsSize.width-200)/2, kBoundsSize.height-200, 200, 40) addTarget:self.view];
+    
+    if(_selectNewAddressBlock){
+    
+        self.selectNewAddressBlock(model.personName);
+    
+    }
 
 }
+-(void)selectAddress:(SelectNewAddressBlock)block{
 
+   
+    
+        self.selectNewAddressBlock=block;
+    
+  
+
+
+}
 
 
 /**删除按钮 */
