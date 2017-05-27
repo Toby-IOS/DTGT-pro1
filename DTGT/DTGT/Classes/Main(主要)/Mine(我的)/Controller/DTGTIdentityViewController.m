@@ -8,6 +8,7 @@
 
 #import "DTGTIdentityViewController.h"
 #import "macros.pch"
+#import "DTGTAlertView.h"
 @interface DTGTIdentityViewController ()
 
 @end
@@ -17,29 +18,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:NO];
-    self.navigationItem.title=@"身份认证";
+    self.navigationItem.title=@"实名认证";
     self.view.backgroundColor=ZPJColor(245, 245, 245);
     // Do any additional setup after loading the view from its nib.
-    UIImageView *itemBgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kBoundsSize.width, 64)];
-    [itemBgView setImage:[UIImage imageNamed:@"navigatebar"]];
-    itemBgView.userInteractionEnabled=YES;
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake((kBoundsSize.width-100)/2,20, 100, 44)];
-    title.text = @"实名认证";
-    title.textAlignment = NSTextAlignmentCenter;
-    title.textColor =[UIColor whiteColor];
-    title.font = [UIFont fontWithName:@"Helvetica" size:18.0];
-    [itemBgView addSubview:title];
-    [self.view addSubview:itemBgView];
-    
-//    UIButton *leftBarBnt = [[UIButton alloc] initWithFrame:CGRectMake(5, 20, 50, 44)];
-//    leftBarBnt.backgroundColor=[UIColor clearColor];
-//    [leftBarBnt setImage:[UIImage imageNamed:@"Industrychoose_return.png"] forState:UIControlStateNormal];
-//    [leftBarBnt setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//    [leftBarBnt addTarget:self action:@selector(leftBtnClick) forControlEvents:UIControlEventTouchUpInside];
-//    [itemBgView addSubview:leftBarBnt];
-
+  
     [self.view addSubview:self.tableView];
-    
     
     UIView *footerView=[[UIView alloc]initWithFrame:CGRectMake(0, 445, WITCH, 200)];
     
@@ -96,14 +79,11 @@
 -(UITableView*)tableView{
 
     if(!_mainView){
-    
-        
-        _mainView=[[UITableView alloc]initWithFrame:CGRectMake(0, 64, WITCH, HEIGHT-64-49)];
+
+        _mainView=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, WITCH, HEIGHT-49)];
         _mainView.backgroundColor=[UIColor clearColor];
         _mainView.delegate=self;
         _mainView.dataSource=self;
-        
-        
         
     }
 
@@ -151,10 +131,10 @@
         
         
    
-        nameField=[[TextField alloc]initWithFrame:CGRectMake(100, 0, WITCH-100, 50) withPlaceholderStr:@"请输入真实姓名" andKeyboardTypeNumberPad:NO withIndex:6];
+        nameField=[[TextField alloc]initWithFrame:CGRectMake(100, 0, WITCH-100, 50) withPlaceholderStr:@"请输入真实姓名" andKeyboardTypeNumberPad:NO withIndex:5];
         nameField.textField.textColor=ZPJColor(136,136,136);
         nameField.textFieldDelegate=self;
-        nameField.textField.secureTextEntry = YES;
+//        nameField.textField.secureTextEntry = YES;
         [nameField.textField setBackgroundColor:[UIColor clearColor]];
         [cell addSubview:nameField];
     }else  if(indexPath.row==1){
@@ -166,10 +146,10 @@
         cardNumberLab.backgroundColor=[UIColor clearColor];
         [cell addSubview:cardNumberLab];
         
-        cardNumberField=[[TextField alloc]initWithFrame:CGRectMake(100, 0, WITCH-100, 50) withPlaceholderStr:@"请输入身份证号" andKeyboardTypeNumberPad:NO withIndex:6];
+        cardNumberField=[[TextField alloc]initWithFrame:CGRectMake(100, 0, WITCH-100, 50) withPlaceholderStr:@"请输入身份证号" andKeyboardTypeNumberPad:NO withIndex:5];
         cardNumberField.textField.textColor=ZPJColor(136,136,136);
         cardNumberField.textFieldDelegate=self;
-        cardNumberField.textField.secureTextEntry = YES;
+//        cardNumberField.textField.secureTextEntry = YES;
         [cardNumberField.textField setBackgroundColor:[UIColor clearColor]];
         [cell addSubview:cardNumberField];
     
@@ -199,10 +179,26 @@
             UIButton *button=[[UIButton alloc]initWithFrame:CGRectMake(200,80*i+20*(i+1)+30 , 140, 80)];
             button.tag=i;
             [button setImage:[UIImage imageNamed:@"realname_upload_150x95"] forState:UIControlStateNormal];
-            [button addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchDown];
+            [button addTarget:self action:@selector(uploadAvataClick:) forControlEvents:UIControlEventTouchDown];
             [cell addSubview:button];
+            if(i==0){
+            imageView1=[[UIImageView alloc]initWithFrame:CGRectMake(0,0 , 140, 80)];
+            imageView1.backgroundColor=[UIColor clearColor];
+            [button addSubview:imageView1];
+            }else if(i==1){
+                
+              imageView2=[[UIImageView alloc]initWithFrame:CGRectMake(0,0 , 140, 80)];
+            imageView2.backgroundColor=[UIColor clearColor];
+            [button addSubview:imageView2];
+            }else if(i==2){
+                
+              imageView3=[[UIImageView alloc]initWithFrame:CGRectMake(0,0 , 140, 80)];
+            imageView3.backgroundColor=[UIColor clearColor];
+            [button addSubview:imageView3];
+            }
             
         }
+        
         
     
     }
@@ -211,16 +207,80 @@
 
 
 }
--(void)buttonClick:(UIButton*)button{
 
+-(void)setDoneBnt{
+
+
+}
+-(void)uploadAvataClick:(UIButton*)button{
+    index=(int)button.tag;
     NSLog(@"button==%ld",button.tag);
+    [self uploadAvata];
 
 }
 -(void)submitClick{
 
-    NSLog(@"submitClick");
+    
+    
+    NSLog(@"cardNumberField===%@=====nameField====%@",cardNumberField.textField.text,nameField.textField.text);
+    
+    [DTGTAlertView showWithTitle:@"提交成功" andFont:14.0 andTime:2.0 andFrame:CGRectMake((kBoundsSize.width-200)/2, kBoundsSize.height-200, 200, 40) addTarget:self.view];
 
 }
+
+
+
+-(void)uploadAvata{
+    
+    avataSeet=[[UIActionSheet alloc]initWithTitle:  @"上传照片" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照", @"从相册选择",nil];
+    avataSeet.actionSheetStyle=UIActionSheetStyleDefault;
+    [avataSeet showInView:self.view];
+}
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if(actionSheet==avataSeet){
+        if(buttonIndex==0){
+            UIImagePickerController *PickerImage = [[UIImagePickerController alloc]init];
+            //获取方式:通过相机
+            PickerImage.sourceType = UIImagePickerControllerSourceTypeCamera;
+            PickerImage.allowsEditing = YES;
+            PickerImage.delegate = self;
+            [self presentViewController:PickerImage animated:YES completion:nil];
+            NSLog(@"拍照");
+        }
+        if(buttonIndex==1){
+            NSLog(@"相册");
+            //初始化UIImagePickerController
+            UIImagePickerController *PickerImage = [[UIImagePickerController alloc]init];
+            //获取方式1：通过相册（呈现全部相册），UIImagePickerControllerSourceTypePhotoLibrary
+            //获取方式2，通过相机，UIImagePickerControllerSourceTypeCamera
+            //获取方法3，通过相册（呈现全部图片），UIImagePickerControllerSourceTypeSavedPhotosAlbum
+            PickerImage.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            //允许编辑，即放大裁剪
+            PickerImage.allowsEditing = YES;
+            //自代理
+            PickerImage.delegate = self;
+            //页面跳转
+            [self presentViewController:PickerImage animated:YES completion:nil];
+        }
+    }
+}
+
+//PickerImage完成后的代理方法
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
+    //定义一个newPhoto，用来存放我们选择的图片。
+    UIImage *newPhoto = [info objectForKey:@"UIImagePickerControllerEditedImage"];
+    if(index==0){
+       imageView1.image = newPhoto;
+    }else if(index==1){
+       imageView2.image = newPhoto;
+    }else if(index==2){
+    
+       imageView3.image = newPhoto;
+    }
+ 
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 /**点击屏幕空白处取消键盘*/
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {

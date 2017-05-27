@@ -36,16 +36,12 @@
     [self getCityData];
     self.frame=[UIScreen mainScreen].bounds;
     self.backgroundColor=[UIColor blackColor];
-    self.alpha = 0.6;
+//    self.alpha = 0.6;//会导致view上所有的空间都会产生半透明效果
+    self.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.7f];//我们只设置了背景是透明的，没有全局的设置view的透明属性，就能使得添加到view的所有子试图保持原来的属性，不会变成透明的
     
     UIGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backgroundTapped)];
     [self addGestureRecognizer:gesture];
-  
-    
-    
-    
-    
-    
+
     //一个选择器
     _cityPicker=[[UIPickerView alloc] initWithFrame:CGRectMake(0, KScreenHeight-216, KScreenWidth, 216)];
     _cityPicker.delegate=self;

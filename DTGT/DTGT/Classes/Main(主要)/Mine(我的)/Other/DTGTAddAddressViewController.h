@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "TextField.h"
 #import "AdressModel.h"
+
 @interface DTGTAddAddressViewController : UIViewController<UITextViewDelegate>
 {
 
@@ -21,5 +22,7 @@
     TextField *phoneNumberField;
     TextField *zipCodeField;
 }
+
 @property (nonatomic,strong) AdressModel *model;
+@property (nonatomic,strong) NSString *titleString;
 @end

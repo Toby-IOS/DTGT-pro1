@@ -12,6 +12,7 @@
 #import "DTGTChangePersonalInfoViewController.h"
 #import "DTGTAddressViewController.h"
 #import "DTGTAddAddressViewController.h"
+#import "DTGTQRcodeViewController.h"
 @interface DTGTPersonalViewController ()
 
 @end
@@ -198,7 +199,7 @@
         
     }else  if(indexPath.row==2){
 
-     
+        [self changeQR];
     }else  if(indexPath.row==3){
         
       [self changeSex];
@@ -215,6 +216,12 @@
     }
 
     
+}
+-(void)changeQR{
+    DTGTQRcodeViewController *qrVC=[[DTGTQRcodeViewController alloc]init];
+    [self.navigationController pushViewController:qrVC animated:YES];
+
+
 }
 -(void)changeAddress{
     DTGTAddressViewController *addAdressVC=[[DTGTAddressViewController alloc]init];

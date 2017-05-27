@@ -73,13 +73,11 @@
  
     }
   
-
-    
     if(_textBlock){
         self.textBlock(_dic);
     }
     
-    NSLog(@"saveClick");
+
 }
 
 

@@ -9,13 +9,20 @@
 #import <UIKit/UIKit.h>
 #import "TextField.h"
 
-@interface DTGTIdentityViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,TextFieldDelegate>
+@interface DTGTIdentityViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,TextFieldDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate>
 {
 
     TextField *nameField;
     TextField *cardNumberField;
 
- 
+    UIActionSheet *avataSeet;
+    UIImageView *imageView1;
+    UIImageView *imageView2;
+    UIImageView *imageView3;
+    
+    int index;
+    
 }
 @property(nonatomic,strong)   UITableView *mainView;
+
 @end

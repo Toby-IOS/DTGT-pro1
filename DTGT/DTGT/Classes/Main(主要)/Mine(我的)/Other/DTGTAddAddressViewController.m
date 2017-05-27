@@ -64,7 +64,12 @@
     areBnt=[[UIButton alloc]initWithFrame:CGRectMake(80, 64+88, kBoundsSize.width-100, 44)];
     [areBnt setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
     [areBnt setBackgroundColor:[UIColor clearColor]];
-    [areBnt setTitle:@"请选择所在地区" forState:UIControlStateNormal];
+    if(_model){
+      [areBnt setTitle:_model.cityName forState:UIControlStateNormal];
+    }else{
+       [areBnt setTitle:@"请选择所在地区" forState:UIControlStateNormal];
+    }
+  
     [areBnt setTitleColor:ZPJColor(51, 51, 51) forState:UIControlStateNormal];
     areBnt.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:14.0];
     [areBnt addTarget:self action:@selector(areClick) forControlEvents:UIControlEventTouchUpInside];

@@ -134,13 +134,9 @@
 /**编辑按钮 */
 - (void)editBtnClick:(UIButton *)button {
     DTGTAddAddressViewController *addAddressVC = [[DTGTAddAddressViewController alloc] init];
-//    addAddressVC.model = _dataArray[button.tag];
-//    newAddressVC.titleString = @"修改地址";
-//    
-//    newAddressVC.addressBlock = ^(ReceiptAddressModel *model) {
-//        [_dataArray replaceObjectAtIndex:button.tag withObject:model];
-//        [_tableView reloadData];
-//    };
+    addAddressVC.model = dataArray[button.tag];
+    addAddressVC.titleString = @"修改地址";
+    
     [self.navigationController pushViewController:addAddressVC animated:YES];
 }
 
