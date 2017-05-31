@@ -9,8 +9,8 @@
 #import "GJLSeetingViewController.h"
 #import "macros.pch"
 #import "DTGTTabBar.h"
-//#import "<#header#>"
-
+#import "GJLNewPasswordViewController.h"
+#import "AFNetworkTool.h"
 @interface GJLSeetingViewController ()
 
 @end
@@ -41,17 +41,8 @@
     [leftBarBnt addTarget:self action:@selector(leftBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [itemBgView addSubview:leftBarBnt];
     
-    
-    logOutBnt = [[UIButton alloc] initWithFrame: CGRectMake((WITCH-300)/2, 400, 300, 40)];
-    logOutBnt.backgroundColor = [UIColor grayColor];
-    logOutBnt.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:15.0];
-    [logOutBnt setTitle:@"退出登录" forState:UIControlStateNormal];
-    logOutBnt.titleLabel.textColor=[UIColor whiteColor];
-    [logOutBnt addTarget:self action:@selector(logOut) forControlEvents:UIControlEventTouchDown];
-    [self.view addSubview:logOutBnt];
 
-    
-    array=[NSArray arrayWithObjects:@"清除缓存",@"分享",@"关于我们", nil];
+    array=[NSArray arrayWithObjects:@"密码修改",@"清除缓存",@"分享",@"关于我们", nil];
     
     mainTableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 64, kBoundsSize.width, kBoundsSize.height-64)];
     mainTableView.dataSource=self;
@@ -61,6 +52,14 @@
     
     [self.view addSubview:mainTableView];
 
+    
+    logOutBnt = [[UIButton alloc] initWithFrame: CGRectMake((WITCH-300)/2, 400, 300, 40)];
+    logOutBnt.backgroundColor = [UIColor grayColor];
+    logOutBnt.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:15.0];
+    [logOutBnt setTitle:@"退出登录" forState:UIControlStateNormal];
+    logOutBnt.titleLabel.textColor=[UIColor whiteColor];
+    [logOutBnt addTarget:self action:@selector(logOut) forControlEvents:UIControlEventTouchDown];
+    [self.view addSubview:logOutBnt];
 }
 -(void)setExtraCellLineHidden: (UITableView *)tableView
 
@@ -103,7 +102,7 @@
     cell.textLabel.font=[UIFont fontWithName:@"Helvetica" size:15.0];
     cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle=UITableViewCellAccessoryNone;
-    if(indexPath.row==0){
+    if(indexPath.row==1){
      if(!cacheLab)
         cacheLab=[[UILabel alloc]initWithFrame:CGRectMake(WITCH-150, 10, 120, 30)];
         cacheLab.text=[NSString stringWithFormat:@"%.2fKB", [self readCacheSize] *1024];;
@@ -116,14 +115,25 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if(indexPath.row==0){
+    if(indexPath.row==1){
         [self clearFile];
     }
     
-//    GJLChatViewController *ctVC=[[GJLChatViewController alloc]init];
-//    [self.navigationController pushViewController:ctVC animated:YES];
+    if(indexPath.row==0){
+            GJLNewPasswordViewController *nsVC=[[GJLNewPasswordViewController alloc]init];
+            [self.navigationController pushViewController:nsVC animated:YES];
+    
+    }
+
     
 }
+
+
+
+
+
+
+
 
 
 
@@ -150,8 +160,78 @@
 //        }
 //    }
 //     self.navigationController.tabBarController.selectedIndex = 0;
+    [self loadData];
     [self.navigationController popViewControllerAnimated:NO];
 }
+
+
+
+-(void)loadData{
+    
+    NSString *url=@"http://192.168.1.132:8084/rest/appUser/loginOut";
+    NSMutableDictionary *infoDic=[NSMutableDictionary dictionary];
+    [infoDic setObject:@"8989" forKey:@"userName"];//123456
+  
+    
+    [AFNetworkTool postJSONWithUrl:url parameters:infoDic success:^(id responseObject) {
+        
+        // 解析数据
+        //        [self fillWithJsonString:result];
+        
+        
+        NSString *outputString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSLog(@"OK---返回数据：%@",outputString);
+        
+        NSData* jsonData = [outputString dataUsingEncoding:NSUTF8StringEncoding];
+        
+        NSDictionary* dic = [self toArrayOrNSDictionary:jsonData];
+        
+        NSLog(@"dic==%@",dic);
+        
+        
+        
+    } fail:^{
+        
+    }];
+    
+    
+}
+/**NSData转化成字典方法调用*/
+
+- (id)toArrayOrNSDictionary:(NSData *)jsonData
+{
+    NSError *error = nil;
+    id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                    options:NSJSONReadingAllowFragments
+                                                      error:&error];
+    
+    if (jsonObject != nil && error == nil){
+        return jsonObject;
+    }else{
+        // 解析错误
+        return nil;
+    }
+    
+}
+
+/**字典转化成字符串json方法调用*/
+-(NSString*)dictionaryToJson:(NSDictionary *)dic
+{
+    NSError *parseError = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:&parseError];
+    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+}
+
+
+
+
+
+
+
+
+
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

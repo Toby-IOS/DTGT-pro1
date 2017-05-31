@@ -8,6 +8,7 @@
 
 #import "GJLNewPasswordViewController.h"
 #import "macros.pch"
+#import "AFNetworkTool.h"
 @interface GJLNewPasswordViewController ()<TextFieldDelegate>
 
 @end
@@ -133,8 +134,8 @@
     nextBnt.frame = CGRectMake(0, 1, kBoundsSize.width, 42);
     nextBnt.backgroundColor = [UIColor orangeColor];
     nextBnt.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:15.0];
-    //    [nextBnt setTitleColor: [UIColor orangeColor]];
     [nextBnt setTitle:@"确认" forState:UIControlStateNormal];
+    [nextBnt setTintColor:[UIColor whiteColor]];
     [nextBnt addTarget:self action:@selector(nextBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [nextBackView addSubview:nextBnt];
     // 倒计时标签
@@ -158,6 +159,65 @@
  
 //        GJLNewPasswordViewController*npVC = [[GJLNewPasswordViewController alloc]init];
 //        [self.navigationController pushViewController:npVC animated:YES];
- 
+    [self loadData];
 }
+
+
+-(void)loadData{
+    
+    NSString *url=@"http://192.168.1.132:8084/rest/appUser/updatePwd";
+    NSMutableDictionary *infoDic=[NSMutableDictionary dictionary];
+    [infoDic setObject:@"8989" forKey:@"userName"];//123456
+    [infoDic setObject:@"9090" forKey:@"oldPwd"];//admin
+    [infoDic setObject:@"8080" forKey:@"newPwd"];//admin
+
+    [AFNetworkTool postJSONWithUrl:url parameters:infoDic success:^(id responseObject) {
+        
+        // 解析数据
+        //        [self fillWithJsonString:result];
+        
+        
+        NSString *outputString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSLog(@"OK---返回数据：%@",outputString);
+        
+        NSData* jsonData = [outputString dataUsingEncoding:NSUTF8StringEncoding];
+        
+        NSDictionary* dic = [self toArrayOrNSDictionary:jsonData];
+        
+        NSLog(@"dic==%@",dic);
+        
+        
+        
+    } fail:^{
+        
+    }];
+    
+    
+}
+/**NSData转化成字典方法调用*/
+
+- (id)toArrayOrNSDictionary:(NSData *)jsonData
+{
+    NSError *error = nil;
+    id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                    options:NSJSONReadingAllowFragments
+                                                      error:&error];
+    
+    if (jsonObject != nil && error == nil){
+        return jsonObject;
+    }else{
+        // 解析错误
+        return nil;
+    }
+    
+}
+
+/**字典转化成字符串json方法调用*/
+-(NSString*)dictionaryToJson:(NSDictionary *)dic
+{
+    NSError *parseError = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:&parseError];
+    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+}
+
 @end

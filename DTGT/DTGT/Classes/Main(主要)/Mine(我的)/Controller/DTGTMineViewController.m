@@ -12,6 +12,8 @@
 #import "UserLoginViewController.h"
 #import "DTGTPersonalViewController.h"
 #import "DTGTIdentityViewController.h"
+#import "DTGTaccountBalanceViewController.h"
+#import "DTGTtransferAccountsViewController.h"
 @interface DTGTMineViewController ()
 
 @end
@@ -30,18 +32,34 @@
     [self.view addSubview:bgView];
     
     
-    UILabel *titleLab=[[UILabel alloc]initWithFrame:CGRectMake(0, 170, WITCH, 30)];
-    titleLab.textColor=[UIColor whiteColor];
-    titleLab.text=@"           收藏                         分享                          积分 ";
-    titleLab.font=[UIFont systemFontOfSize:15.0f];
-    [bgView addSubview:titleLab ];
+    
+    UIButton *integralBnt=[[UIButton alloc]initWithFrame:CGRectMake(20, 165, 100, 40)];
+    [integralBnt setBackgroundColor:[UIColor clearColor]];
+    integralBnt.titleLabel.font=[UIFont systemFontOfSize:14];
+    [integralBnt setTitle:@"积分" forState:UIControlStateNormal];
+    [integralBnt addTarget:self action:@selector(integralClick) forControlEvents:UIControlEventTouchUpInside];
+    [bgView addSubview:integralBnt];
+    
+    UIButton *transferAccountsBnt=[[UIButton alloc]initWithFrame:CGRectMake(140, 165, 100, 40)];
+    [transferAccountsBnt setBackgroundColor:[UIColor clearColor]];
+    [transferAccountsBnt setTitle:@"转账" forState:UIControlStateNormal];
+     transferAccountsBnt.titleLabel.font=[UIFont systemFontOfSize:14];
+    [transferAccountsBnt addTarget:self action:@selector(transferAccountsClick) forControlEvents:UIControlEventTouchUpInside];
+    [bgView addSubview:transferAccountsBnt];
+    
+    UIButton *accountBalanceBnt=[[UIButton alloc]initWithFrame:CGRectMake(260, 165, 100, 40)];
+    [accountBalanceBnt setBackgroundColor:[UIColor clearColor]];
+    [accountBalanceBnt setTitle:@"账户余额" forState:UIControlStateNormal];
+    accountBalanceBnt.titleLabel.font=[UIFont systemFontOfSize:14];
+    [accountBalanceBnt addTarget:self action:@selector(accountBalanceClick) forControlEvents:UIControlEventTouchUpInside];
+    [bgView addSubview:accountBalanceBnt];
     
     
-    UIImageView* line1=[[UIImageView alloc]initWithFrame:CGRectMake(120, 175, 1, 20)];
+    UIImageView* line1=[[UIImageView alloc]initWithFrame:CGRectMake(125, 175, 1, 20)];
     line1.backgroundColor= kBackgroundColor;
     
     [bgView addSubview:line1];
-    UIImageView* line2=[[UIImageView alloc]initWithFrame:CGRectMake(240, 175, 1, 20)];
+    UIImageView* line2=[[UIImageView alloc]initWithFrame:CGRectMake(250, 175, 1, 20)];
     line2.backgroundColor= kBackgroundColor;
     
     [bgView addSubview:line2];
@@ -119,14 +137,34 @@
 //    [self.view addSubview:logOutBnt];
     
     
-    array=[NSArray arrayWithObjects:@"个人资料",@" 实名认证",@"客服与帮助",@"设置",nil];
-    
+    array=[NSArray arrayWithObjects:@"个人资料",@" 实名认证",@"我的收藏",@"客服与帮助",@"设置",nil];
+    imgArray=[NSArray arrayWithObjects:@"message_official_33x33_",@"message_follow_33x33_",@"message_prase_33x33_",@"message_notice_33x33_",@"message_headline_33x33_", nil];
     mainTableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 200, kBoundsSize.width, kBoundsSize.height-49)];
     mainTableView.backgroundColor=[UIColor clearColor];
     mainTableView.dataSource=self;
     mainTableView.delegate=self;
     [self setExtraCellLineHidden:mainTableView];
     [self.view addSubview:mainTableView];
+}
+
+-(void)accountBalanceClick{
+
+    DTGTaccountBalanceViewController *abVC=[[DTGTaccountBalanceViewController alloc]init];
+     abVC.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:abVC animated:YES];
+
+
+}
+-(void)integralClick{
+
+
+}
+
+-(void)transferAccountsClick{
+
+    DTGTtransferAccountsViewController *taVC=[[DTGTtransferAccountsViewController alloc]init];
+    taVC.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:taVC animated:YES];
 }
 
 -(void)setExtraCellLineHidden: (UITableView *)tableView
@@ -192,18 +230,11 @@
     
     UITableViewCell *cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
     cell.textLabel.text=[array objectAtIndex:indexPath.row];
+    cell.imageView.image=[UIImage imageNamed:[imgArray objectAtIndex: indexPath.row]];
     cell.textLabel.font=[UIFont fontWithName:@"Helvetica" size:15.0];
     cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle=UITableViewCellAccessoryNone;
-//    if(indexPath.row==3){
-//        if(!cacheLab)
-//            cacheLab=[[UILabel alloc]initWithFrame:CGRectMake(WITCH-150, 5, 120, 30)];
-//        cacheLab.text=[NSString stringWithFormat:@"%.2fKB", [self readCacheSize] *1024];;
-//        cacheLab.textAlignment=NSTextAlignmentRight;
-//        cacheLab.font=[UIFont fontWithName:@"Helvetica" size:12.0];
-//        cacheLab.textColor=[UIColor grayColor];
-//        [cell addSubview:cacheLab];
-//    }
+
     return  cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -223,22 +254,24 @@
       
     }else  if(indexPath.row==2){
      
-          NSLog(@"客服咨询");
-    }else  if(indexPath.row==3){
         
-//        [self clearFile];
+    }
+    else  if(indexPath.row==3){
+        
+      
+    }else  if(indexPath.row==4){
+        
+
         GJLSeetingViewController *stVC=[[GJLSeetingViewController alloc]init];
         stVC.hidesBottomBarWhenPushed=YES;
         [ self.navigationController pushViewController:stVC animated:YES];
         
-    }else  if(indexPath.row==4){
+    }else  if(indexPath.row==5){
         NSLog(@"rightButtonOnClick");
      
         
     }
-    
-    //    GJLChatViewController *ctVC=[[GJLChatViewController alloc]init];
-    //    [self.navigationController pushViewController:ctVC animated:YES];
+  
     
 }
 

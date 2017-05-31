@@ -65,7 +65,9 @@
     _titleFont=[UIFont systemFontOfSize:15];
     _btns=[[NSMutableArray alloc] initWithCapacity:0];
     _titleNomalColor=[UIColor blackColor];
-    _titleSelectColor=SFQRedColor;
+//    _titleSelectColor=SFQRedColor;
+     _titleSelectColor=[UIColor orangeColor];
+    
 }
 
 -(void)initViews{

@@ -8,6 +8,7 @@
 
 #import "DTGTTabBar.h"
 #import "DTGTTabBarButton.h"
+#import "macros.pch"
 
 @interface DTGTTabBar()
 
@@ -40,7 +41,7 @@
 //}
 
 -(void)setItems:(NSMutableArray *)items{
-    [self setBackgroundColor:[UIColor grayColor]];
+    [self setBackgroundColor:[UIColor whiteColor]];
     _items=items;
     
     for(int i=0;i<[items count];i++){

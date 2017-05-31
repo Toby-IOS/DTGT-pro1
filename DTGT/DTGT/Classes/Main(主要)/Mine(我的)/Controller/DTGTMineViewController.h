@@ -17,6 +17,7 @@
     UITableView *mainTableView;
     
     NSArray *array;
+    NSArray *imgArray;
     UIButton*logOutBnt;
     NSString *cacheSizeStr;
     UILabel  *cacheLab;

@@ -9,6 +9,7 @@
 #import "UserLoginViewController.h"
 #import "macros.pch"
 #import "ForgetPasswordViewController.h"
+#import "AFNetworkTool.h"
 @interface UserLoginViewController ()
 
 @end
@@ -21,11 +22,11 @@
     self.navigationController.navigationBarHidden=YES;
     UIImageView *topBackView=[[UIImageView alloc ]initWithFrame:CGRectMake(0, 0, kBoundsSize.width, kTitleBarH)];
 //    [topBackView setBackgroundColor:[UIColor colorWithRed:185/255.0f green:14/255.0f  blue:48/255.0f alpha:1.0f]];
-    [topBackView setImage:[UIImage imageNamed:@"navigatebar"]];
+//    [topBackView setImage:[UIImage imageNamed:@"navigatebar"]];
     topBackView.userInteractionEnabled=YES;
     UILabel *titleLab=[[UILabel alloc]initWithFrame:CGRectMake(0, 5,kBoundsSize.width, kTitleBarH)];
     titleLab.text=@"登录";
-    titleLab.textColor=[UIColor whiteColor];
+    titleLab.textColor=[UIColor blackColor];
     titleLab.textAlignment=NSTextAlignmentCenter;
     [titleLab setBackgroundColor:[UIColor clearColor]];
     titleLab.font=[UIFont fontWithName:@"Helvetica" size:18.0];
@@ -107,7 +108,7 @@
     forgetBnt.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     [registerBnt setTitleColor:ZPJColor(136,136,136) forState:UIControlStateNormal];
     [registerBnt setTitleColor:ZPJColor(200,200,200) forState:UIControlStateHighlighted];
-    [registerBnt addTarget:self action:@selector( registerClick) forControlEvents:UIControlEventTouchUpInside];
+    [registerBnt addTarget:self action:@selector(registerClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:registerBnt];
     
     
@@ -286,7 +287,7 @@
         return;
     }
    
- 
+    [self loadData];
     
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     NSLog(@"1111===%@",[userDefault objectForKey:kIsStorePassword]);
@@ -300,6 +301,41 @@
     
   
 }
+
+-(void)loadData{
+    
+    NSString *url=@"http://192.168.1.132:8084/rest/appUser/login";
+    NSMutableDictionary *infoDic=[NSMutableDictionary dictionary];
+    [infoDic setObject:userNameField.textField.text forKey:@"userName"];//123456
+    [infoDic setObject:passWordField.textField.text forKey:@"userPwd"];//admin
+   
+    [AFNetworkTool postJSONWithUrl:url parameters:infoDic success:^(id responseObject) {
+        
+        // 解析数据
+        //        [self fillWithJsonString:result];
+        
+        
+        NSString *outputString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSLog(@"OK---返回数据：%@",outputString);
+        
+        NSData* jsonData = [outputString dataUsingEncoding:NSUTF8StringEncoding];
+        
+        NSDictionary* dic = [self toArrayOrNSDictionary:jsonData];
+        
+        NSLog(@"dic==%@",dic);
+        
+        
+        
+    } fail:^{
+        
+    }];
+    
+    
+}
+
+
+
+
 
 /**NSData转化成字典方法调用*/
 

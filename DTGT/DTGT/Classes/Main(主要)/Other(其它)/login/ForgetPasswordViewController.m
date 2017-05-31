@@ -9,6 +9,7 @@
 #import "ForgetPasswordViewController.h"
 #import "TextField.h"
 #import "macros.pch"
+#import "AFNetworkTool.h"
 @interface ForgetPasswordViewController () <TextFieldDelegate>
 
 @end
@@ -29,6 +30,88 @@
     //添加控件
     [self configUI];
 }
+
+-(void)loadData{
+    
+    NSString *url=@"http://192.168.1.132:8084/rest/appUser/register";
+    NSMutableDictionary *infoDic=[NSMutableDictionary dictionary];
+    [infoDic setObject:_phoneNumberField.textField.text forKey:@"userName"];//123456
+    [infoDic setObject:_identifyingField.textField.text forKey:@"userPwd"];//admin
+    [infoDic setObject:@"1" forKey:@"userType"];//adminNSLog(@"infoDic==%@",infoDic);
+    [AFNetworkTool postJSONWithUrl:url parameters:infoDic success:^(id responseObject) {
+    
+        // 解析数据
+        //        [self fillWithJsonString:result];
+ 
+        
+        NSString *outputString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSLog(@"OK---返回数据：%@",outputString);
+        
+        NSData* jsonData = [outputString dataUsingEncoding:NSUTF8StringEncoding];
+        
+        NSDictionary* dic = [self toArrayOrNSDictionary:jsonData];
+
+        NSLog(@"dic==%@",dic);
+        
+        
+        
+    } fail:^{
+        
+    }];
+    
+   
+}
+
+/** 解析数据*/
+- (void)fillWithJsonString:(NSDictionary*)dicData {
+//    _dataSource = [[NSMutableArray alloc] init];
+//    NSDictionary *resultDict = [dicData objectForKey:@"data"];
+//    NSArray *array = [resultDict objectForKey:@"items"];
+//    for (NSDictionary *dict in array) {
+//        Product *product = [[Product alloc]init];
+//        product.productId = [dict objectForKey:@"id"];
+//        product.productTitle = [dict objectForKey:@"description"];
+//        product.productPrice = [dict objectForKey:@"price"];
+//        
+//        product.productImgUrl = [[dict objectForKey:@"image_urls"] firstObject];
+//        
+//        product.productImgUrls = [dict objectForKey:@"image_urls"];
+//        [_dataSource addObject:product];
+//    }
+//    [_collectionView reloadData];
+    //    [_collectionView.header endRefreshing];
+    
+}
+
+/**NSData转化成字典方法调用*/
+
+- (id)toArrayOrNSDictionary:(NSData *)jsonData
+{
+    NSError *error = nil;
+    id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                    options:NSJSONReadingAllowFragments
+                                                      error:&error];
+    
+    if (jsonObject != nil && error == nil){
+        return jsonObject;
+    }else{
+        // 解析错误
+        return nil;
+    }
+    
+}
+
+/**字典转化成字符串json方法调用*/
+-(NSString*)dictionaryToJson:(NSDictionary *)dic
+{
+    NSError *parseError = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:&parseError];
+    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+}
+
+
+
+
 /**返回按钮的响应事件*/
 - (void)getBack
 {
@@ -146,8 +229,8 @@
     nextBnt.frame = CGRectMake(0, 1, kBoundsSize.width, 42);
     nextBnt.backgroundColor = [UIColor orangeColor];
     nextBnt.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:15.0];
-//    [nextBnt setTitleColor: [UIColor orangeColor]];
     [nextBnt setTitle:@"下一步" forState:UIControlStateNormal];
+    [nextBnt setTintColor:[UIColor whiteColor]];
     [nextBnt addTarget:self action:@selector(nextBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [nextBackView addSubview:nextBnt];
     // 倒计时标签
@@ -179,23 +262,24 @@
 /**确定进行验证并执行页面跳转*/
 -(void)nextBtnClick
 {
-    [_timer invalidate];
-    _timeLabel.hidden = YES;
-    getIdentifyingBnt.enabled = YES;
-    [getIdentifyingBnt setTitle:@"重新获取验证码" forState:UIControlStateNormal];
-    if([_identifyingField.textField.text isEqualToString:@"1234"]) {
-         GJLNewPasswordViewController*npVC = [[GJLNewPasswordViewController alloc]init];
-        [self.navigationController pushViewController:npVC animated:YES];
-    }else {
-        // 验证码提示框
-        _alertLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 250, kBoundsSize.width, 44)];
-        _alertLabel.textColor = [UIColor redColor];
-        _alertLabel.text = @"验证码不正确";
-        _alertLabel.textAlignment = NSTextAlignmentCenter;
-        _alertLabel.textColor = [UIColor blackColor];
-        _alertLabel.font = [UIFont fontWithName:@"Helvetica" size:14.0];
-        [self.view addSubview:_alertLabel];
-    }
+//    [_timer invalidate];
+//    _timeLabel.hidden = YES;
+//    getIdentifyingBnt.enabled = YES;
+//    [getIdentifyingBnt setTitle:@"重新获取验证码" forState:UIControlStateNormal];
+//    if([_identifyingField.textField.text isEqualToString:@"1234"]) {
+//         GJLNewPasswordViewController*npVC = [[GJLNewPasswordViewController alloc]init];
+//        [self.navigationController pushViewController:npVC animated:YES];
+//    }else {
+//        // 验证码提示框
+//        _alertLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 250, kBoundsSize.width, 44)];
+//        _alertLabel.textColor = [UIColor redColor];
+//        _alertLabel.text = @"验证码不正确";
+//        _alertLabel.textAlignment = NSTextAlignmentCenter;
+//        _alertLabel.textColor = [UIColor blackColor];
+//        _alertLabel.font = [UIFont fontWithName:@"Helvetica" size:14.0];
+//        [self.view addSubview:_alertLabel];
+//    }
+    [self loadData];
 }
 /**获取手机号验证码的响应事件*/
 - (void)getIdentifyingCodeClick
