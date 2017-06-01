@@ -88,20 +88,20 @@
 
 
     
-    if(index==4){
-        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-        
-        if([[userDefault objectForKey:kIsStorePassword] isEqualToString:@"0"]){
-            UserLoginViewController *lognVC=[[UserLoginViewController alloc]init];
-            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:lognVC];
-            [ self presentViewController:nav animated: YES completion:nil];
-            
-        }else{
-            //设置控制器调转页面
-            return;
-            
-        }
-    }
+//    if(index==3){
+//        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+//        
+//        if([[userDefault objectForKey:kIsStorePassword] isEqualToString:@"0"]){
+//            UserLoginViewController *lognVC=[[UserLoginViewController alloc]init];
+//            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:lognVC];
+//            [ self presentViewController:nav animated: YES completion:nil];
+//            
+//        }else{
+//            //设置控制器调转页面
+//            return;
+//            
+//        }
+//    }
 }
 -(void)btnClick:(id)sender{
 //    int i=[sender tag];

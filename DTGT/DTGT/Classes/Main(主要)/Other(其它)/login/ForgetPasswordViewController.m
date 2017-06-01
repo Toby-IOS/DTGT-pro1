@@ -33,33 +33,7 @@
 
 -(void)loadData{
     
-    NSString *url=@"http://192.168.1.132:8084/rest/appUser/register";
-    NSMutableDictionary *infoDic=[NSMutableDictionary dictionary];
-    [infoDic setObject:_phoneNumberField.textField.text forKey:@"userName"];//123456
-    [infoDic setObject:_identifyingField.textField.text forKey:@"userPwd"];//admin
-    [infoDic setObject:@"1" forKey:@"userType"];//adminNSLog(@"infoDic==%@",infoDic);
-    [AFNetworkTool postJSONWithUrl:url parameters:infoDic success:^(id responseObject) {
-    
-        // 解析数据
-        //        [self fillWithJsonString:result];
- 
-        
-        NSString *outputString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSLog(@"OK---返回数据：%@",outputString);
-        
-        NSData* jsonData = [outputString dataUsingEncoding:NSUTF8StringEncoding];
-        
-        NSDictionary* dic = [self toArrayOrNSDictionary:jsonData];
-
-        NSLog(@"dic==%@",dic);
-        
-        
-        
-    } fail:^{
-        
-    }];
-    
-   
+      
 }
 
 /** 解析数据*/

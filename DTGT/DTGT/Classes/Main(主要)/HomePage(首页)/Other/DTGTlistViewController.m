@@ -89,6 +89,7 @@ NSMutableArray *_dataSource;
 
 -(void)loadData{
 
+    
 NSString *url=@"http://api.liwushuo.com/v2/item_subcategories/7/items?limit=40&offset=0";
 
     [AFNetworkTool JSONDataWithUrl:url success:^(id json) {

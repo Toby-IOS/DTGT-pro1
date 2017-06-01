@@ -9,6 +9,8 @@
 #import "GJLNewPasswordViewController.h"
 #import "macros.pch"
 #import "AFNetworkTool.h"
+#import "DTGTAlertView.h"
+#import "UserLoginViewController.h"
 @interface GJLNewPasswordViewController ()<TextFieldDelegate>
 
 @end
@@ -31,7 +33,7 @@
     itemBgView.backgroundColor = [UIColor grayColor];
     // 标题
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake((kBoundsSize.width-100)/2,20, 100, 44)];
-    title.text = @"找回密码";
+    title.text = @"密码修改";
     title.textAlignment = NSTextAlignmentCenter;
     title.textColor = [UIColor blackColor];
     title.font = [UIFont fontWithName:@"Helvetica" size:18.0];
@@ -46,146 +48,134 @@
     [leftBarBnt addTarget:self action:@selector(getBack) forControlEvents:UIControlEventTouchUpInside];
     [itemBgView addSubview:leftBarBnt];
     
-    // 手机号提示信息
-    UILabel *mobileLab = [[UILabel alloc]initWithFrame:CGRectMake(19, 78, kBoundsSize.width-38, 20)];
-    mobileLab.text = @"新密码(6-16位字母，数字，符号)";
-    mobileLab.textColor = [UIColor colorWithRed:51/255.0f green:51/255.0f blue:51/255.0f alpha:1.0f];
-    mobileLab.font = [UIFont fontWithName:@"Helvetica" size:15.0];
-    //    [self.view addSubview:mobileLab];
+    
     // 手机号输入框背景图
     UIView *phoneBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 113, kBoundsSize.width, 49)];
     phoneBackView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:phoneBackView];
-    // 手机号背景图分割线
-    UIImageView *topLineView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kBoundsSize.width, 1)];
-    topLineView.backgroundColor = [UIColor colorWithRed:229/255.0f green:229/255.0f blue:229/255.0f alpha:1.0f];
-    [phoneBackView addSubview:topLineView];
-    UIImageView *bottomLineView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 48, kBoundsSize.width, 1)];
-    bottomLineView.backgroundColor = [UIColor colorWithRed:229/255.0f green:229/255.0f blue:229/255.0f alpha:1.0f];
-    [phoneBackView addSubview:bottomLineView];
+   
     // 手机号文字
     UILabel *identifyingLab = [[UILabel alloc]initWithFrame:CGRectMake(19, 14, 70, 20)];
-    identifyingLab.text = @"手机号:";
+    identifyingLab.text = @"旧密码:";
     identifyingLab.textColor = [UIColor colorWithRed:51/255.0f green:51/255.0f blue:51/255.0f alpha:1.0f];
     identifyingLab.font = [UIFont fontWithName:@"Helvetica" size:15.0];
-    //    [phoneBackView addSubview:identifyingLab];
+        [phoneBackView addSubview:identifyingLab];
     // 手机号输入框
-    _phoneNumberField = [[TextField alloc] initWithFrame:CGRectMake(75, 4, kBoundsSize.width-75-19-50, 40) withPlaceholderStr:@"新密码(6-16位字母，数字，符号)" andKeyboardTypeNumberPad:YES withIndex:3];
-    _phoneNumberField.textFieldDelegate = self;
-    _phoneNumberField.textField.backgroundColor = [UIColor whiteColor];
-    _phoneNumberField.textField.font = [UIFont fontWithName:@"Helvetica" size:15.0];
-    [phoneBackView addSubview:_phoneNumberField];
+    oldPasswordField = [[TextField alloc] initWithFrame:CGRectMake(75, 4, kBoundsSize.width-75-19-50, 40) withPlaceholderStr:@"旧密码" andKeyboardTypeNumberPad:NO withIndex:3];
+    oldPasswordField.textFieldDelegate = self;
+    oldPasswordField.textField.backgroundColor = [UIColor whiteColor];
+    oldPasswordField.textField.font = [UIFont fontWithName:@"Helvetica" size:15.0];
+    [phoneBackView addSubview:oldPasswordField];
     
     
     // 验证码输入框背景图
-    UIView *identifyingBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 113+49, kBoundsSize.width, 49)];
+    UIView *identifyingBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 113+49+2, kBoundsSize.width, 49)];
     identifyingBackView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:identifyingBackView];
-    // 验证码背景图分割线
-    UIImageView *topLineView1 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kBoundsSize.width, 1)];
-    topLineView1.backgroundColor = [UIColor colorWithRed:229/255.0f green:229/255.0f blue:229/255.0f alpha:1.0f];
-    [identifyingBackView addSubview:topLineView1];
-    UIImageView *bottomLineView1 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 48, kBoundsSize.width, 1)];
-    bottomLineView1.backgroundColor = [UIColor colorWithRed:229/255.0f green:229/255.0f blue:229/255.0f alpha:1.0f];
-    [identifyingBackView addSubview:bottomLineView1];
-    // 验证码
+
     UILabel *identifyingLabel = [[UILabel alloc]initWithFrame:CGRectMake(19, 14, 70, 20)];
-    identifyingLabel.text = @"验证码:";
+    identifyingLabel.text = @"新密码:";
     identifyingLabel.textColor = [UIColor colorWithRed:51/255.0f green:51/255.0f blue:51/255.0f alpha:1.0f];
     identifyingLabel.font = [UIFont fontWithName:@"Helvetica" size:15.0];
-    //    [identifyingBackView addSubview:identifyingLabel];
+        [identifyingBackView addSubview:identifyingLabel];
     // 手机短信证码输入框
-    _identifyingField=[[TextField alloc]initWithFrame:CGRectMake(75, 4, kBoundsSize.width-75-19-50, 40) withPlaceholderStr:@"确认密码" andKeyboardTypeNumberPad:YES withIndex:4];
-    _identifyingField.textField.backgroundColor = [UIColor whiteColor];
-    _identifyingField.textField.font = [UIFont fontWithName:@"Helvetica" size:15.0];
-    [identifyingBackView addSubview:_identifyingField];
+   newPasswordField=[[TextField alloc]initWithFrame:CGRectMake(75, 4, kBoundsSize.width-75-19-50, 40) withPlaceholderStr:@"新密码" andKeyboardTypeNumberPad:NO withIndex:4];
+    newPasswordField.textField.backgroundColor = [UIColor whiteColor];
+    newPasswordField.textField.font = [UIFont fontWithName:@"Helvetica" size:15.0];
+    [identifyingBackView addSubview:newPasswordField];
     
-    // 获取验证码按钮
-    getIdentifyingBnt = [UIButton buttonWithType:UIButtonTypeCustom];
-    getIdentifyingBnt.frame = CGRectMake(75+50+50+50+20+20, 4, kBoundsSize.width-75-19-100-50-50+20, 40);
-    getIdentifyingBnt.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:13.0];
-    //    [getIdentifyingBnt setBackgroundImage:[UIImage imageNamed:@"login_default.png"] forState:UIControlStateNormal];
-    //    [getIdentifyingBnt setBackgroundImage:[UIImage imageNamed:@"login_lighted.png"] forState:UIControlStateHighlighted];
-    //    [getIdentifyingBnt setBackgroundImage:[UIImage imageNamed:@"login_lighted.png"] forState:UIControlStateSelected];
-    [getIdentifyingBnt setBackgroundColor:[UIColor whiteColor]];
-    getIdentifyingBnt.enabled=NO;
-    [getIdentifyingBnt setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
-    [getIdentifyingBnt setTitle:@"获取验证码" forState:UIControlStateNormal];
-    [getIdentifyingBnt setTitle:@"" forState:UIControlStateSelected];
-    [getIdentifyingBnt addTarget:self action:@selector(getIdentifyingCodeClick) forControlEvents:UIControlEventTouchUpInside];
-//    [identifyingBackView addSubview:getIdentifyingBnt];
+   
+    
+    // 验证码输入框背景图
+    UIView *confirmPasswordView = [[UIView alloc] initWithFrame:CGRectMake(0, 113+49+4+49, kBoundsSize.width, 49)];
+    confirmPasswordView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:confirmPasswordView];
+   
+    // 手机号提示信息
+    UILabel *mobileLab = [[UILabel alloc]initWithFrame:CGRectMake(19, 14, kBoundsSize.width-38, 20)];
+    mobileLab.text = @"确认密码:";
+    mobileLab.textColor = [UIColor colorWithRed:51/255.0f green:51/255.0f blue:51/255.0f alpha:1.0f];
+    mobileLab.font = [UIFont fontWithName:@"Helvetica" size:15.0];
+    [confirmPasswordView addSubview:mobileLab];
+    
+    confirmPasswordField=[[TextField alloc]initWithFrame:CGRectMake(90, 4, kBoundsSize.width-75-19-50, 40) withPlaceholderStr:@"确认密码" andKeyboardTypeNumberPad:NO withIndex:4];
+    confirmPasswordField.textField.backgroundColor = [UIColor whiteColor];
+    confirmPasswordField.textField.font = [UIFont fontWithName:@"Helvetica" size:15.0];
+    [confirmPasswordView addSubview:confirmPasswordField];
     
     
     
-    
-    // 下一步输入框背景图
-    UIView *nextBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 300, kBoundsSize.width, 44)];
-    nextBackView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:nextBackView];
-    // 下一步背景图分割线
-    UIImageView *topLineView2 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kBoundsSize.width, 1)];
-    topLineView2.backgroundColor = [UIColor colorWithRed:229/255.0f green:229/255.0f blue:229/255.0f alpha:1.0f];
-    [nextBackView addSubview:topLineView2];
-    UIImageView *bottomLineView2 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 43, kBoundsSize.width, 1)];
-    bottomLineView2.backgroundColor = [UIColor colorWithRed:229/255.0f green:229/255.0f blue:229/255.0f alpha:1.0f];
-    [nextBackView addSubview:bottomLineView2];
-    // 下一步按钮
-    nextBnt = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    nextBnt.frame = CGRectMake(0, 1, kBoundsSize.width, 42);
-    nextBnt.backgroundColor = [UIColor orangeColor];
-    nextBnt.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:15.0];
-    [nextBnt setTitle:@"确认" forState:UIControlStateNormal];
-    [nextBnt setTintColor:[UIColor whiteColor]];
-    [nextBnt addTarget:self action:@selector(nextBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [nextBackView addSubview:nextBnt];
-    // 倒计时标签
-    _timeLabel = [[UILabel alloc] initWithFrame: CGRectMake(75+50+50+50+20+20, 4, kBoundsSize.width-75-19-100-50-50, 40)];
-    _timeLabel.backgroundColor = [UIColor clearColor];
-    _timeLabel.textColor = [UIColor orangeColor];
-    _timeLabel.font = [UIFont fontWithName:@"Helvetica" size:13.0];
-    _timeLabel.textAlignment = NSTextAlignmentCenter;
-    _timeLabel.hidden = YES;
-    [identifyingBackView addSubview:_timeLabel];
+
+    // 确定按钮
+   UIButton *doneBnt = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    doneBnt.frame = CGRectMake(20, HEIGHT/3+100, WITCH-40, 50);
+    doneBnt.backgroundColor = [UIColor orangeColor];
+    doneBnt.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:15.0];
+    [doneBnt setTitle:@"确认" forState:UIControlStateNormal];
+    [doneBnt setTintColor:[UIColor whiteColor]];
+    [doneBnt addTarget:self action:@selector(doneBntClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:doneBnt];
+  
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    self.navigationController.navigationBarHidden = YES;
+}
 - (void)getBack
 {
  
     [self.navigationController popViewControllerAnimated:YES];
 }
 
--(void)nextBtnClick
+-(void)doneBntClick
 {
- 
-//        GJLNewPasswordViewController*npVC = [[GJLNewPasswordViewController alloc]init];
-//        [self.navigationController pushViewController:npVC animated:YES];
-    [self loadData];
+    [oldPasswordField.textField resignFirstResponder];
+    [newPasswordField.textField resignFirstResponder];
+    [confirmPasswordField.textField resignFirstResponder];
+    
+    if([oldPasswordField.textField.text isEqualToString:@""]){
+        
+        [DTGTAlertView showWithTitle:@"请输入密码" andFont:14.0 andTime:2.0 andFrame:CGRectMake((kBoundsSize.width-200)/2, kBoundsSize.height-200, 200, 40) addTarget:self.view];
+        return;
+    }
+    if([newPasswordField.textField.text isEqualToString:@""]){
+        
+        [DTGTAlertView showWithTitle:@"请输入新密码" andFont:14.0 andTime:2.0 andFrame:CGRectMake((kBoundsSize.width-200)/2, kBoundsSize.height-200, 200, 40) addTarget:self.view];
+        return;
+    }
+    if([confirmPasswordField.textField.text isEqualToString:@""]){
+        
+        [DTGTAlertView showWithTitle:@"请输入确认密码" andFont:14.0 andTime:2.0 andFrame:CGRectMake((kBoundsSize.width-200)/2, kBoundsSize.height-200, 200, 40) addTarget:self.view];
+        return;
+    }
+    
+    
+    [self httpRequest];
 }
 
 
--(void)loadData{
+-(void)httpRequest{
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    NSString *userNameStr= [userDefault objectForKey:kUsername];
     
     NSString *url=@"http://192.168.1.132:8084/rest/appUser/updatePwd";
     NSMutableDictionary *infoDic=[NSMutableDictionary dictionary];
-    [infoDic setObject:@"8989" forKey:@"userName"];//123456
-    [infoDic setObject:@"9090" forKey:@"oldPwd"];//admin
-    [infoDic setObject:@"8080" forKey:@"newPwd"];//admin
+    [infoDic setObject:userNameStr forKey:@"userName"];//123456
+    [infoDic setObject:oldPasswordField.textField.text forKey:@"oldPwd"];//admin
+    [infoDic setObject:newPasswordField.textField.text  forKey:@"newPwd"];//admin
 
     [AFNetworkTool postJSONWithUrl:url parameters:infoDic success:^(id responseObject) {
         
-        // 解析数据
-        //        [self fillWithJsonString:result];
-        
+     
         
         NSString *outputString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSLog(@"OK---返回数据：%@",outputString);
-        
         NSData* jsonData = [outputString dataUsingEncoding:NSUTF8StringEncoding];
-        
         NSDictionary* dic = [self toArrayOrNSDictionary:jsonData];
         
-        NSLog(@"dic==%@",dic);
-        
+
+        [self fillWithJsonString:dic];
         
         
     } fail:^{
@@ -193,6 +183,48 @@
     }];
     
     
+}
+
+- (void)fillWithJsonString:(NSDictionary*)dicData {
+    
+    NSLog(@"dicData==%@",dicData);
+    int  code =[[dicData objectForKey:@"code"] intValue];
+    
+    NSString *str=[dicData objectForKey:@"msg"];
+
+    
+    if(code==101||code==102){
+        
+        [DTGTAlertView showWithTitle:str andFont:14.0 andTime:2.0 andFrame:CGRectMake((kBoundsSize.width-200)/2, kBoundsSize.height-200, 200, 40) addTarget:self.view];
+        
+    }
+    
+    
+    
+    
+    if(code ==200){
+        
+        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+        if([[userDefault objectForKey:kIsStorePassword] isEqualToString:@"1"]){
+            [userDefault setObject:@"0" forKey:kIsStorePassword];
+        }
+        
+       
+          [DTGTAlertView showWithTitle:@"密码修改成功" andFont:14.0 andTime:2.0 andFrame:CGRectMake((kBoundsSize.width-200)/2, kBoundsSize.height-200, 200, 40) addTarget:self.view];
+        
+        
+
+         [self performSelector:@selector(goBack) withObject:nil afterDelay:2.0];
+
+    }
+    
+    
+}
+-(void)goBack
+{
+    
+           [self.navigationController popViewControllerAnimated:YES];
+
 }
 /**NSData转化成字典方法调用*/
 
@@ -211,7 +243,21 @@
     }
     
 }
+/**点击屏幕空白处取消键盘*/
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [oldPasswordField.textField resignFirstResponder];
+    [newPasswordField.textField resignFirstResponder];
+    [confirmPasswordField.textField resignFirstResponder];
+    
+}
 
+/**设置登录按钮状态代理方法调用*/
+-(void)setDoneBnt{
+    
+   
+    
+}
 /**字典转化成字符串json方法调用*/
 -(NSString*)dictionaryToJson:(NSDictionary *)dic
 {

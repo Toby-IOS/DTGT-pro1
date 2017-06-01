@@ -11,6 +11,7 @@
 #import "DTGTTabBar.h"
 #import "GJLNewPasswordViewController.h"
 #import "AFNetworkTool.h"
+#import "UserLoginViewController.h"
 @interface GJLSeetingViewController ()
 
 @end
@@ -53,8 +54,8 @@
     [self.view addSubview:mainTableView];
 
     
-    logOutBnt = [[UIButton alloc] initWithFrame: CGRectMake((WITCH-300)/2, 400, 300, 40)];
-    logOutBnt.backgroundColor = [UIColor grayColor];
+    logOutBnt = [[UIButton alloc] initWithFrame: CGRectMake(20, 400, WITCH-40, 40)];
+    logOutBnt.backgroundColor = [UIColor orangeColor];
     logOutBnt.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:15.0];
     [logOutBnt setTitle:@"退出登录" forState:UIControlStateNormal];
     logOutBnt.titleLabel.textColor=[UIColor whiteColor];
@@ -120,8 +121,22 @@
     }
     
     if(indexPath.row==0){
+        
+        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+        
+        if([[userDefault objectForKey:kIsStorePassword] isEqualToString:@"0"]){
+            UserLoginViewController* login=[[UserLoginViewController alloc]init];
+            UINavigationController *nav=[[UINavigationController alloc]initWithRootViewController:login];
+            [self presentViewController:nav animated:YES completion:nil];
+        }else {
+        
+            
             GJLNewPasswordViewController *nsVC=[[GJLNewPasswordViewController alloc]init];
             [self.navigationController pushViewController:nsVC animated:YES];
+        }
+        
+            
+        
     
     }
 
@@ -139,55 +154,40 @@
 
 
 -(void)logOut{
-    
-    
-    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-     NSLog(@"333===%@",[userDefault objectForKey:kIsStorePassword]);
-    if([[userDefault objectForKey:kIsStorePassword] isEqualToString:@"1"]){
-        [userDefault setObject:@"0" forKey:kIsStorePassword];
-    NSLog(@"444===%@",[userDefault objectForKey:kIsStorePassword]);
-    }
-//    UIViewController *groupBuyInfoVC = [self.navigationController.viewControllers objectAtIndex:2];
-//  [self.navigationController popToViewController: groupBuyInfoVC animated:YES];
-
-//    NSLog(@"self.navigationController.viewControllers==%@",self.tabBarController.tabBar.subviews);
-//    self.navigationController.tabBarController.selectedIndex = 0;
-//    [self.navigationController popToRootViewControllerAnimated:YES];
-    
-//    for(UIView *view in self.tabBarController.tabBar.subviews){
-//        if([view isKindOfClass:[GJLTabBar class]]){
-//            NSLog(@"[GJLTabBar class]==%@",[GJLTabBar class] );
-//        }
+  
+//    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+//    if([[userDefault objectForKey:kIsStorePassword] isEqualToString:@"1"]){
+//        [userDefault setObject:@"0" forKey:kIsStorePassword];
+//        
+//    [self.navigationController popViewControllerAnimated:YES];
 //    }
-//     self.navigationController.tabBarController.selectedIndex = 0;
-    [self loadData];
-    [self.navigationController popViewControllerAnimated:NO];
+    [self httpRequest];
+ 
 }
 
 
 
--(void)loadData{
+-(void)httpRequest{
     
-    NSString *url=@"http://192.168.1.132:8084/rest/appUser/loginOut";
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    NSString *userNameStr= [userDefault objectForKey:kUsername];
+//
+    NSString *url=@"http://192.168.1.132:8084/rest/user/loginOut";
     NSMutableDictionary *infoDic=[NSMutableDictionary dictionary];
-    [infoDic setObject:@"8989" forKey:@"userName"];//123456
+    [infoDic setObject:userNameStr forKey:@"userName"];//123456
   
     
     [AFNetworkTool postJSONWithUrl:url parameters:infoDic success:^(id responseObject) {
         
-        // 解析数据
-        //        [self fillWithJsonString:result];
-        
         
         NSString *outputString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSLog(@"OK---返回数据：%@",outputString);
+ 
         
         NSData* jsonData = [outputString dataUsingEncoding:NSUTF8StringEncoding];
         
         NSDictionary* dic = [self toArrayOrNSDictionary:jsonData];
         
-        NSLog(@"dic==%@",dic);
-        
+        [self fillWithJsonString:dic];
         
         
     } fail:^{
@@ -196,6 +196,26 @@
     
     
 }
+- (void)fillWithJsonString:(NSDictionary*)dicData {
+    
+    NSLog(@"dicData==%@",dicData);
+    int  code =[[dicData objectForKey:@"code"] intValue];
+    
+    if(code ==200){
+        
+        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+        if([[userDefault objectForKey:kIsStorePassword] isEqualToString:@"1"]){
+            [userDefault setObject:@"0" forKey:kIsStorePassword];
+        }
+            
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        
+        
+    }
+    
+
+
 /**NSData转化成字典方法调用*/
 
 - (id)toArrayOrNSDictionary:(NSData *)jsonData

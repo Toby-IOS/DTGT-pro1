@@ -8,6 +8,8 @@
 
 #import "DTGTaccountBalanceViewController.h"
 #import "macros.pch"
+#import "DTGTAlertView.h"
+#import "AFNetworkTool.h"
 @interface DTGTaccountBalanceViewController ()
 
 @end
@@ -20,19 +22,16 @@
     [self.view setBackgroundColor:ZPJColor(225, 225, 225)];
     self.navigationItem.title=@"账户余额";
     [self.navigationController setNavigationBarHidden:NO];
-    
-    
-    
-    
-    
-    
-    
+    [self httpRequest];
+
     mainTableView =[[UITableView alloc]initWithFrame:CGRectMake(0, 0, WITCH, HEIGHT)];
     mainTableView.delegate=self;
     mainTableView.dataSource=self;
     mainTableView.backgroundColor=[UIColor clearColor];
     [self setExtraCellLineHidden:mainTableView];
     [self.view addSubview:mainTableView];
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -122,6 +121,72 @@
 
 
 
+-(void)httpRequest{
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    
+    
+    NSString *myAccount=[userDefault objectForKey:kUsername];
+    
+    
+    NSString *url=@"http://192.168.1.132:8090/query/a";
+    
+//    balanceLab.text=;
+    //    NSMutableDictionary *infoDic=[NSMutableDictionary dictionary];
+    //    [infoDic setObject:_otherAccountField.textField.text forKey:@"otherAccount"];//123456
+    //    [infoDic setObject:_transferMoneyField.textField.text forKey:@"transferMoney"];//admin
+    //    [infoDic setObject:myAccount forKey:@"myAccount"];//admin
+    
+    
+    [AFNetworkTool JSONDataWithUrl:url success:^(id json) {
+        
+        NSDictionary *result = json;
+        NSLog(@"result==%@",result);
+        
+        [self fillWithJsonString:result];
+        
+        
+    } fail:^{
+        
+        NSLog(@"请求失败");
+    }];
+    
+    
+    
+    
+    
+    
+    
+    
+    
+}
+
+- (void)fillWithJsonString:(NSDictionary*)dicData {
+    
+    NSLog(@"dicData==%@",dicData);
+    int  code =[[dicData objectForKey:@"status"] intValue];
+    
+    NSDictionary *dic= [dicData objectForKey:@"contents"];
+    NSDictionary *resultStr=[dic objectForKey:@"result"];
+    NSLog(@"resultStr==%@",resultStr);
+    NSString *string = [NSString stringWithFormat:@"%@", [resultStr objectForKey:@"data"]];
+    
+    
+    NSLog(@"string==%@",string);
+    
+    balanceLab.text=@"查询成功";
+    
+    //    if(code==102||code==103){
+    
+    //        [DTGTAlertView showWithTitle:str andFont:14.0 andTime:2.0 andFrame:CGRectMake((kBoundsSize.width-200)/2, kBoundsSize.height-200, 200, 40) addTarget:self.view];
+    
+    //    }
+    
+    if(code ==200){
+        
+        [DTGTAlertView showWithTitle:@"查询成功" andFont:14.0 andTime:2.0 andFrame:CGRectMake((kBoundsSize.width-200)/2, kBoundsSize.height-200, 200, 40) addTarget:self.view];
+    }
+    
+}
 
 
 

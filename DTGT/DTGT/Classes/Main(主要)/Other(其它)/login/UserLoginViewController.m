@@ -10,6 +10,9 @@
 #import "macros.pch"
 #import "ForgetPasswordViewController.h"
 #import "AFNetworkTool.h"
+#import "DTGTRegisteredViewController.h"
+#import "DTGTAlertView.h"
+
 @interface UserLoginViewController ()
 
 @end
@@ -162,14 +165,14 @@
         [autoLoginBnt setBackgroundImage:bntImageOn forState:UIControlStateNormal];
         autoLoginBnt.selected=YES;
     }
-    if(![userNameField.textField.text isEqualToString:@""]&&![passWordField.textField.text isEqualToString:@""])
-    {
-        loginBnt.enabled=YES;
-    
-    }else
-    {
-        loginBnt.enabled=NO;
-    }
+//    if(![userNameField.textField.text isEqualToString:@""]&&![passWordField.textField.text isEqualToString:@""])
+//    {
+//        loginBnt.enabled=YES;
+//    
+//    }else
+//    {
+//        loginBnt.enabled=NO;
+//    }
     
 }
 
@@ -254,9 +257,9 @@
 
 -(void)registerClick
 {
-    ForgetPasswordViewController *fpVC = [[ForgetPasswordViewController alloc]initwithTitle:@"注册" withType:2];
+    DTGTRegisteredViewController *rgVC = [[DTGTRegisteredViewController alloc]init];
    
-    [self.navigationController pushViewController:fpVC animated:YES];
+    [self.navigationController pushViewController:rgVC animated:YES];
 
 }
 
@@ -273,36 +276,31 @@
 /**确定按钮方法调用*/
 -(void)loginClick
 {
-    if ([userNameField.textField.text isEqualToString:@""]) {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"请输入用户名" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [alert show];
-        
-        return;
-    }
-    
-    if ([passWordField.textField.text isEqualToString:@""]) {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"请输入密码" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [alert show];
-        
-        return;
-    }
+    [userNameField.textField resignFirstResponder];
+    [passWordField.textField resignFirstResponder];
    
-    [self loadData];
+    if([userNameField.textField.text isEqualToString:@""]){
+        
+        [DTGTAlertView showWithTitle:@"请输入用户名" andFont:14.0 andTime:2.0 andFrame:CGRectMake((kBoundsSize.width-200)/2, kBoundsSize.height-200, 200, 40) addTarget:self.view];
+        return;
+    }
+    if([passWordField.textField.text isEqualToString:@""]){
+        
+        [DTGTAlertView showWithTitle:@"请输入密码" andFont:14.0 andTime:2.0 andFrame:CGRectMake((kBoundsSize.width-200)/2, kBoundsSize.height-200, 200, 40) addTarget:self.view];
+        return;
+    }
     
-    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    NSLog(@"1111===%@",[userDefault objectForKey:kIsStorePassword]);
-    [userDefault setValue:@"1" forKey:kIsStorePassword];
-    NSLog(@"222===%@",[userDefault objectForKey:kIsStorePassword]);
-  
-    [ self dismissViewControllerAnimated: YES completion: nil ];
-    NSLog(@"登录");
+   
+    [self httpRequest];
+    
+   
  
     
     
   
 }
 
--(void)loadData{
+-(void)httpRequest{
     
     NSString *url=@"http://192.168.1.132:8084/rest/appUser/login";
     NSMutableDictionary *infoDic=[NSMutableDictionary dictionary];
@@ -310,20 +308,17 @@
     [infoDic setObject:passWordField.textField.text forKey:@"userPwd"];//admin
    
     [AFNetworkTool postJSONWithUrl:url parameters:infoDic success:^(id responseObject) {
-        
-        // 解析数据
-        //        [self fillWithJsonString:result];
-        
+    
         
         NSString *outputString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSLog(@"OK---返回数据：%@",outputString);
+
         
         NSData* jsonData = [outputString dataUsingEncoding:NSUTF8StringEncoding];
         
         NSDictionary* dic = [self toArrayOrNSDictionary:jsonData];
         
-        NSLog(@"dic==%@",dic);
-        
+      
+        [self fillWithJsonString:dic];
         
         
     } fail:^{
@@ -333,7 +328,36 @@
     
 }
 
+- (void)fillWithJsonString:(NSDictionary*)dicData {
+    
+    NSLog(@"dicData==%@",dicData);
+    int  code =[[dicData objectForKey:@"code"] intValue];
+    NSString *str=[dicData objectForKey:@"msg"];
+   
+   
+    
+    if(code==102||code==103){
+    
+    [DTGTAlertView showWithTitle:str andFont:14.0 andTime:2.0 andFrame:CGRectMake((kBoundsSize.width-200)/2, kBoundsSize.height-200, 200, 40) addTarget:self.view];
+    
+    }
 
+    if(code ==200){
+        
+         NSDictionary *objDic=[dicData objectForKey:@"obj"];
+        NSString *userName=[objDic objectForKey:@"userName"];
+        
+        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+        [userDefault setValue:@"1" forKey:kIsStorePassword];
+     
+        [userDefault setValue:userName forKey:kUsername];
+    
+        NSLog(@"登录");
+        
+     [self performSelector:@selector(getBack) withObject:nil afterDelay:1.0];
+    }
+
+}
 
 
 
@@ -366,6 +390,7 @@
 /**进入首页方法调用*/
 -(void)getBack
 {
+     [ self dismissViewControllerAnimated: YES completion: nil ];
 
 //    SYLTabBarController *tabBar = [[SYLTabBarController alloc] init];
 //    [UIApplication sharedApplication].keyWindow.rootViewController = tabBar;
@@ -380,14 +405,14 @@
 /**设置登录按钮状态代理方法调用*/
 -(void)setDoneBnt{
 
-    if(![userNameField.textField.text  isEqualToString:@""]&&![passWordField.textField.text  isEqualToString:@""]){
-        loginBnt.enabled=YES;
-    }
-    else
-    {
-
-         loginBnt.enabled=NO;
-    }
+//    if(![userNameField.textField.text  isEqualToString:@""]&&![passWordField.textField.text  isEqualToString:@""]){
+//        loginBnt.enabled=YES;
+//    }
+//    else
+//    {
+//
+//         loginBnt.enabled=NO;
+//    }
     
 }
 -(void)returnFieldText:(NSString *)str

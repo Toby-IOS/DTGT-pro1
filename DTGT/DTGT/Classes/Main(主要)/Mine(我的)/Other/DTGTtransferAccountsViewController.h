@@ -7,7 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TextField.h"
 
-@interface DTGTtransferAccountsViewController : UIViewController
+@interface DTGTtransferAccountsViewController : UIViewController<TextFieldDelegate>
+
+@property(strong,nonatomic)UIImageView *headImgView;
+@property(strong,nonatomic)UILabel *moneyLab;
+@property(strong,nonatomic)UILabel *myAccountlab;
+@property(strong,nonatomic)TextField *otherAccountField;
+@property(strong,nonatomic)TextField *transferMoneyField;
+@property(strong,nonatomic)TextField *noteField;
+@property(strong,nonatomic)UIButton *doneBnt;
+
 
 @end

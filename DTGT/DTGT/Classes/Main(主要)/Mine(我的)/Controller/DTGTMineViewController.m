@@ -23,6 +23,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     //    self.navigationItem.title=@"我的";
+    NSUserDefaults *userDefault1 = [NSUserDefaults standardUserDefaults];
+      NSString *userNameStr= [userDefault1 objectForKey:kUsername];
+    NSLog(@"userNameStr==%@",userNameStr);
+    
+    
     self.navigationController.navigationBarHidden=YES;
     [self.view setBackgroundColor:ZPJColor(225, 225, 225)];
     
