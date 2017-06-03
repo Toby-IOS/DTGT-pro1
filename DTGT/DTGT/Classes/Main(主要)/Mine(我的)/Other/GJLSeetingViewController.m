@@ -12,6 +12,7 @@
 #import "GJLNewPasswordViewController.h"
 #import "AFNetworkTool.h"
 #import "UserLoginViewController.h"
+#import "DTGTInterfaceViewController.h"
 @interface GJLSeetingViewController ()
 
 @end
@@ -43,7 +44,7 @@
     [itemBgView addSubview:leftBarBnt];
     
 
-    array=[NSArray arrayWithObjects:@"密码修改",@"清除缓存",@"分享",@"关于我们", nil];
+    array=[NSArray arrayWithObjects:@"密码修改",@"清除缓存",@"接口",@"地图", nil];
     
     mainTableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 64, kBoundsSize.width, kBoundsSize.height-64)];
     mainTableView.dataSource=self;
@@ -137,6 +138,12 @@
         
             
         
+    
+    }else if(indexPath.row==2){
+    
+        DTGTInterfaceViewController *ifVC=[[DTGTInterfaceViewController alloc]init];
+        [self.navigationController pushViewController:ifVC animated:YES];
+    
     
     }
 

@@ -9,7 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "TextField.h"
 
-@interface DTGTtransferAccountsViewController : UIViewController<TextFieldDelegate>
+@interface DTGTtransferAccountsViewController : UIViewController<TextFieldDelegate>{
+
+
+    NSString *myAccount;
+
+}
 
 @property(strong,nonatomic)UIImageView *headImgView;
 @property(strong,nonatomic)UILabel *moneyLab;

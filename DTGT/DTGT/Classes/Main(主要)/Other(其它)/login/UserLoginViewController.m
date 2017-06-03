@@ -303,6 +303,7 @@
 -(void)httpRequest{
     
     NSString *url=@"http://192.168.1.132:8084/rest/appUser/login";
+//     NSString *url=@"http://192.168.1.160:8084/rest/appUser/login";
     NSMutableDictionary *infoDic=[NSMutableDictionary dictionary];
     [infoDic setObject:userNameField.textField.text forKey:@"userName"];//123456
     [infoDic setObject:passWordField.textField.text forKey:@"userPwd"];//admin

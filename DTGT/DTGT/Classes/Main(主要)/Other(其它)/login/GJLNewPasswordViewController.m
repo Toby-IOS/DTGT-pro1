@@ -161,6 +161,7 @@
     NSString *userNameStr= [userDefault objectForKey:kUsername];
     
     NSString *url=@"http://192.168.1.132:8084/rest/appUser/updatePwd";
+//     NSString *url=@"http://192.168.1.160:8084/rest/appUser/updatePwd";
     NSMutableDictionary *infoDic=[NSMutableDictionary dictionary];
     [infoDic setObject:userNameStr forKey:@"userName"];//123456
     [infoDic setObject:oldPasswordField.textField.text forKey:@"oldPwd"];//admin

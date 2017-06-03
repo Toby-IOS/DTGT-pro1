@@ -66,7 +66,7 @@
     balanceLab=[[UILabel alloc]initWithFrame:CGRectMake(10, 40, 150, 60)];
     balanceLab.text=@"0.00";
     balanceLab.textColor=[UIColor orangeColor];
-    balanceLab.font=[UIFont systemFontOfSize:23];
+    balanceLab.font=[UIFont systemFontOfSize:25];
     [cell addSubview:balanceLab];
     
     queryDetailsBnt=[[UIButton alloc]initWithFrame:CGRectMake(WITCH-120, 30, 100, 40)];
@@ -128,8 +128,8 @@
     NSString *myAccount=[userDefault objectForKey:kUsername];
     
     
-    NSString *url=@"http://192.168.1.132:8090/query/a";
-    
+    NSString *url=@"http://192.168.1.132:8084/rest/appNodejs/query/";
+    NSString *getUrl=[NSString stringWithFormat:@"%@/%@",url,myAccount];
 //    balanceLab.text=;
     //    NSMutableDictionary *infoDic=[NSMutableDictionary dictionary];
     //    [infoDic setObject:_otherAccountField.textField.text forKey:@"otherAccount"];//123456
@@ -137,7 +137,7 @@
     //    [infoDic setObject:myAccount forKey:@"myAccount"];//admin
     
     
-    [AFNetworkTool JSONDataWithUrl:url success:^(id json) {
+    [AFNetworkTool JSONDataWithUrl:getUrl success:^(id json) {
         
         NSDictionary *result = json;
         NSLog(@"result==%@",result);
@@ -168,12 +168,9 @@
     NSDictionary *dic= [dicData objectForKey:@"contents"];
     NSDictionary *resultStr=[dic objectForKey:@"result"];
     NSLog(@"resultStr==%@",resultStr);
-    NSString *string = [NSString stringWithFormat:@"%@", [resultStr objectForKey:@"data"]];
-    
-    
-    NSLog(@"string==%@",string);
-    
-    balanceLab.text=@"查询成功";
+    NSString *string = [NSString stringWithFormat:@"￥：%@", [resultStr objectForKey:@"money"]];
+ 
+    balanceLab.text=string;
     
     //    if(code==102||code==103){
     

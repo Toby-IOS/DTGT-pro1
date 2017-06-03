@@ -22,6 +22,11 @@
     self.navigationItem.title=@"转账";
     [self.navigationController setNavigationBarHidden:NO];
     
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    
+    
+    myAccount=[userDefault objectForKey:kUsername];
+    
     [self initView];
     
     
@@ -39,7 +44,7 @@
     _myAccountlab=[[UILabel alloc]initWithFrame:CGRectMake((WITCH-100)/2, 100, 100, 30)];
 //    _myAccountlab.backgroundColor=[UIColor redColor];
     _myAccountlab.textAlignment=NSTextAlignmentCenter;
-    _myAccountlab.text=@"a";
+    _myAccountlab.text=myAccount;
     [headerView addSubview:_myAccountlab];
     
   
@@ -137,15 +142,12 @@
 
 
 -(void)httpRequest{
-    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
- 
-    
-         NSString *myAccount=[userDefault objectForKey:kUsername];
-    
-    
-    NSString *url=@"http://192.168.1.132:8090/invoke/a";
+  
 
-    NSString *getUrl=[NSString stringWithFormat:@"%@/%@/%@",url,_otherAccountField.textField.text,_transferMoneyField.textField.text];
+    
+    NSString *url=@"http://192.168.1.132:8084/rest/appNodejs/invoke";
+
+    NSString *getUrl=[NSString stringWithFormat:@"%@/%@/%@/%@",url,myAccount,_otherAccountField.textField.text,_transferMoneyField.textField.text];
     
 //    NSMutableDictionary *infoDic=[NSMutableDictionary dictionary];
 //    [infoDic setObject:_otherAccountField.textField.text forKey:@"otherAccount"];//123456
@@ -179,14 +181,12 @@
 - (void)fillWithJsonString:(NSDictionary*)dicData {
     
     NSLog(@"dicData==%@",dicData);
-    int  code =[[dicData objectForKey:@"status"] intValue];
+    int  code =[[dicData objectForKey:@"code"] intValue];
  
-    NSDictionary *dic= [dicData objectForKey:@"contents"];
-    NSString *resultStr=[dic objectForKey:@"result"];
+   
+    NSString *resultStr=[dicData objectForKey:@"msg"];
     NSLog(@"resultStr==%@",resultStr);
-    
-
-    
+ 
     
 //    if(code==102||code==103){
     
@@ -195,8 +195,12 @@
 //    }
     
     if(code ==200){
-        _noteField.textField.text=@"转账成功";
+        _noteField.textField.text=[dicData objectForKey:@"code"];
         [DTGTAlertView showWithTitle:@"转账成功" andFont:14.0 andTime:2.0 andFrame:CGRectMake((kBoundsSize.width-200)/2, kBoundsSize.height-200, 200, 40) addTarget:self.view];
+    }else {
+    
+        _noteField.textField.text=[dicData objectForKey:@"code"];
+        [DTGTAlertView showWithTitle:resultStr andFont:14.0 andTime:2.0 andFrame:CGRectMake((kBoundsSize.width-200)/2, kBoundsSize.height-200, 200, 40) addTarget:self.view];
     }
     
 }
